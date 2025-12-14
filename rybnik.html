@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Phishing - Malovarský rybník">
+    <meta property="og:description" content="Interaktivní úkol o phishingu - naučte se rozpoznat kybernetické hrozby">
+
+    <title>Phishing - Malovarský rybník | Kyber stezka Velvary</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0090D6;
+            --primary-dark: #005BBB;
+            --accent: #00D6D6; 
+            --bg-color: #F2F4F8;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --radius: 24px;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 24px 45px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 91, 187, 0.25);
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .station-nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            line-height: 1;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .station-nav:hover { background: rgba(255, 255, 255, 0.28); transform: translateY(-1px); }
+        .station-nav:active { transform: translateY(0); }
+        .station-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        .station-label { display: inline; }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-subtitle {
+            margin-top: 10px;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 600px;
+            margin: -35px auto 0;
+            padding: 0 20px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* KARTY */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background-color: #E0F2FE;
+            color: var(--primary-dark);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+        
+        .card-icon svg { width: 28px; height: 28px; }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        p { margin-bottom: 15px; font-size: 0.95rem; color: var(--text-muted); }
+        
+        strong { color: var(--text-main); font-weight: 600; }
+
+        /* INTRO CARD */
+        .intro-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .intro-card .card-icon {
+            background: #E0F2FE;
+        }
+
+        /* QUIZ STYLES */
+        .quiz-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .quiz-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 12px;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .quiz-question-text {
+            flex: 1;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .quiz-option:hover {
+            background: #f8fafc;
+            border-color: var(--primary);
+        }
+
+        .quiz-option.selected {
+            background: #E0F2FE;
+            border-color: var(--primary);
+        }
+
+        .quiz-option.correct {
+            background: #D1FAE5;
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: #FEE2E2;
+            border-color: var(--error);
+        }
+
+        .quiz-option input {
+            display: none;
+        }
+
+        .quiz-option-marker {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .quiz-option.selected .quiz-option-marker {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .quiz-option.correct .quiz-option-marker {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .quiz-option.incorrect .quiz-option-marker {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
+        .quiz-feedback {
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: #D1FAE5;
+            border: 1px solid #10B981;
+            color: #065F46;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #FEE2E2;
+            border: 1px solid #EF4444;
+            color: #991B1B;
+        }
+
+        .quiz-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .quiz-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* PHISHING EXAMPLE */
+        .phishing-example {
+            background: #FEF3C7;
+            border: 2px dashed #F59E0B;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .phishing-example .email-header {
+            border-bottom: 1px solid #FCD34D;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .phishing-example .email-from,
+        .phishing-example .email-subject {
+            margin: 3px 0;
+        }
+
+        .phishing-example .suspicious {
+            color: #DC2626;
+            font-weight: 600;
+        }
+
+        /* TIP BOX */
+        .tip-box {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #F59E0B;
+        }
+
+        .tip-box-title {
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-box p {
+            color: #78350F;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* SCORE CARD */
+        .score-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .score-card h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .score-label {
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .score-message {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+        }
+
+        /* ROZBALOVACÍ DETAILY */
+        details {
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 144, 214, 0.15);
+        }
+
+        summary {
+            padding: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: '+'; 
+            font-size: 1.5rem;
+            line-height: 0;
+            font-weight: 400;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after { transform: rotate(45deg); }
+
+        .details-content {
+            padding: 0 18px 20px 18px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #f3f4f6;
+            margin-top: -5px;
+            padding-top: 15px;
+        }
+
+        .emoji-icon { margin-right: 10px; font-style: normal; }
+
+        /* FOOTER */
+        footer { text-align: center; padding-top: 30px; }
+        .footer-logo-box {
+            background: white;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .o2-logo { height: 40px; width: auto; display: block; }
+        .footer-text { font-size: 0.75rem; opacity: 0.6; margin: 0; }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        /* Comparison table */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.85rem;
+        }
+
+        .compare-table th {
+            background: var(--primary);
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .compare-table td {
+            padding: 10px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .compare-table tr:nth-child(even) {
+            background: #F8FAFC;
+        }
+
+        .hidden { display: none !important; }
+
+        .question-slide {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, var(--warning) 0%, #D97706 100%);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.4);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+
+
+        #questions-wrapper {
+            margin: 20px 0;
+            min-height: 280px;
+        }
+
+        /* Navigace otázek */
+        .quiz-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .quiz-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #E5E7EB;
+            background: white;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-nav-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .quiz-nav-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .quiz-nav-btn.answered-correct {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .quiz-nav-btn.answered-wrong {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
+        .quiz-nav-btn.locked {
+            background: #F3F4F6;
+            border-color: #E5E7EB;
+            color: #CBD5E1;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .quiz-nav-btn.locked:hover {
+            border-color: #E5E7EB;
+            color: #CBD5E1;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .quiz-btn-secondary {
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-btn-secondary:hover {
+            background: #E0F2FE;
+        }
+
+        .quiz-btn-secondary:disabled {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast notifikace -->
+    <div class="toast" id="toast">
+        <span id="toast-message">Vyberte prosím odpověď!</span>
+    </div>
+
+    <header>
+        <span class="location-badge">
+            <a class="station-nav prev" href="slovan.html" aria-label="Předchozí stanoviště">‹</a>
+            <a class="station-nav home" href="index.html" aria-label="Domů">🏠</a>
+            <span class="station-label">Stanoviště 7/9 - Malovarský rybník</span>
+            <a class="station-nav next" href="kostka.html" aria-label="Další stanoviště">›</a>
+        </span>
+        <h1>Phishing: Rybáři vs. Kyber-rybáři</h1>
+    </header>
+
+    <div class="container">
+
+        <!-- ÚVODNÍ KARTA -->
+        <div class="card intro-card">
+            <div class="card-icon">🎣</div>
+            <h2>Co je phishing?</h2>
+            <p>Stejně jako rybáři na tomto rybníku loví ryby pomocí návnad, <strong>kyber-rybáři (phisheři)</strong> loví vaše osobní údaje pomocí falešných e-mailů, SMS a webových stránek.</p>
+            <p>Slovo "phishing" vzniklo spojením slov <strong>"fishing"</strong> (rybaření) a <strong>"phreaking"</strong> (hackerský slang). Útočníci "házejí návnadu" a čekají, kdo se chytí.</p>
+            
+            <div class="tip-box">
+                <div class="tip-box-title">💡 Věděli jste?</div>
+                <p>V roce 2023 bylo v ČR nahlášeno přes 15 000 phishingových útoků. Průměrná škoda na jednu oběť přesahuje 50 000 Kč!</p>
+            </div>
+        </div>
+
+        <!-- POROVNÁNÍ -->
+        <div class="card">
+            <h2>Rybář vs. Kyber-rybář</h2>
+            <table class="compare-table">
+                <tr>
+                    <th>Rybář</th>
+                    <th>Kyber-rybář</th>
+                </tr>
+                <tr>
+                    <td>Používá návnadu</td>
+                    <td>Používá falešný e-mail</td>
+                </tr>
+                <tr>
+                    <td>Chce chytit rybu</td>
+                    <td>Chce získat vaše heslo</td>
+                </tr>
+                <tr>
+                    <td>Sedí u rybníka</td>
+                    <td>Sedí u počítače (kdekoliv)</td>
+                </tr>
+                <tr>
+                    <td>Potřebuje trpělivost</td>
+                    <td>Posílá tisíce zpráv najednou</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- PŘÍKLAD PHISHINGU -->
+        <div class="card">
+            <h2>Příklad phishingového e-mailu</h2>
+            <p>Dokážete najít podezřelé znaky?</p>
+            
+            <div class="phishing-example">
+                <div class="email-header">
+                    <div class="email-from"><strong>Od:</strong> podpora@banka-ceska<span class="suspicious">.xyz</span></div>
+                    <div class="email-subject"><strong>Předmět:</strong> <span class="suspicious">URGENTNÍ!</span> Váš účet bude zablokován!!!</div>
+                </div>
+                <div class="email-body">
+                    <p>Vážený klient<span class="suspicious">,</span></p>
+                    <p>Zaznamenali jsme podezřelou aktivitu na Vašem účtu. <span class="suspicious">Klikněte IHNED</span> na odkaz níže a ověřte své údaje, jinak bude účet <span class="suspicious">ZABLOKOVÁN do 24 hodin</span>!</p>
+                    <p><span class="suspicious">www.banka-overeni.tk/login</span></p>
+                    <p>S pozdravem,<br><span class="suspicious">Tým bezpečnosti</span></p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <div class="tip-box-title">🚨 Varovné znaky</div>
+                <p>Podivná doména (.xyz, .tk), urgentní tón, hrozby, obecné oslovení, podezřelý odkaz, gramatické chyby.</p>
+            </div>
+        </div>
+
+        <!-- KVÍZ - JEDEN KONTEJNER -->
+        <div class="quiz-card card" id="quiz-container">
+            <h2>Otestujte se!</h2>
+            <div class="progress-text">Otázka <span id="current-question">1</span> z 9</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+            </div>
+            
+            <!-- Otázky -->
+            <div id="questions-wrapper">
+                <!-- OTÁZKA 1 -->
+                <div class="question-slide" id="q1">
+                    <div class="quiz-question">
+                        <span class="quiz-number">1</span>
+                        <span class="quiz-question-text">Dostanete e-mail od "České pošty" s odkazem na sledování zásilky. Adresa odesílatele je: info@ceska-posta-doručení.cz. Co uděláte?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Kliknu na odkaz - čekám přece zásilku</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Podezřelé! Ověřím přímo na webu České pošty</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q1" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Odpovím a požádám o více informací</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q1-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 2 -->
+                <div class="question-slide hidden" id="q2">
+                    <div class="quiz-question">
+                        <span class="quiz-number">2</span>
+                        <span class="quiz-question-text">Banka vám volá a žádá PIN k vaší kartě, protože "probíhá bezpečnostní kontrola". Jak zareagujete?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Sdělím PIN - volají přece z banky</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Požádám je o ověření jejich identity</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q2" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Zavěsím a zavolám na oficiální linku banky</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q2-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 3 -->
+                <div class="question-slide hidden" id="q3">
+                    <div class="quiz-question">
+                        <span class="quiz-number">3</span>
+                        <span class="quiz-question-text">Jaký je nejspolehlivější způsob, jak ověřit, že webová stránka je bezpečná pro zadání přihlašovacích údajů?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Stránka vypadá profesionálně</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Zkontrolovat URL v adresním řádku a ověřit HTTPS + správnou doménu</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q3" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Stránka má logo banky/služby</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q3-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 4 -->
+                <div class="question-slide hidden" id="q4">
+                    <div class="quiz-question">
+                        <span class="quiz-number">4</span>
+                        <span class="quiz-question-text">Dostanete SMS: "Vyhráli jste iPhone 15! Klikněte zde pro vyzvednutí: bit.ly/vyhra2024". Co to znamená?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q4" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Je to smishing (SMS phishing) - podvod</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Možná jsem opravdu vyhrál, zkusím to</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q4" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Kliknu, ale nezadám žádné údaje</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q4-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 5 -->
+                <div class="question-slide hidden" id="q5">
+                    <div class="quiz-question">
+                        <span class="quiz-number">5</span>
+                        <span class="quiz-question-text">Přítel vám na Facebooku píše: "Podívej se na tohle video, jsi tam ty! 😱" s podezřelým odkazem. Co uděláte?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q5" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Kliknu - je to přece kamarád</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Zeptám se ho přes stejný chat, o co jde</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q5" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Kontaktuji přítele jiným způsobem (telefon) a ověřím, zda to poslal on</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q5-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 6 -->
+                <div class="question-slide hidden" id="q6">
+                    <div class="quiz-question">
+                        <span class="quiz-number">6</span>
+                        <span class="quiz-question-text">Která z těchto URL adres je PRAVDĚPODOBNĚ legitimní web České spořitelny?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q6" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>https://ceska-sporitelna.prihlaseni-ucet.cz</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>https://www.csas.cz</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q6" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>https://sporitelna-ceska.com/login</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q6-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 7 -->
+                <div class="question-slide hidden" id="q7">
+                    <div class="quiz-question">
+                        <span class="quiz-number">7</span>
+                        <span class="quiz-question-text">Co je "spear phishing"?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q7" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Phishing pomocí telefonních hovorů</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Cílený útok na konkrétní osobu s personalizovanými informacemi</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q7" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Phishing přes sociální sítě</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q7-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 8 -->
+                <div class="question-slide hidden" id="q8">
+                    <div class="quiz-question">
+                        <span class="quiz-number">8</span>
+                        <span class="quiz-question-text">Šéf vám píše e-mail s prosbou o urgentní převod peněz. E-mail vypadá legitimně, ale přišel z adresy sef.firma@gmail.com místo firemní adresy. Co uděláte?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q8" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Provedu převod - je to přece šéf a je to urgentní</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Odpovím na e-mail a požádám o potvrzení</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q8" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Zavolám šéfovi na jeho známé číslo a ověřím požadavek</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q8-feedback"></div>
+                </div>
+
+                <!-- OTÁZKA 9 -->
+                <div class="question-slide hidden" id="q9">
+                    <div class="quiz-question">
+                        <span class="quiz-number">9</span>
+                        <span class="quiz-question-text">Jaké je nejlepší opatření proti phishingu?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="q9" value="a">
+                            <span class="quiz-option-marker">A</span>
+                            <span>Silný antivirus vyřeší vše</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9" value="b">
+                            <span class="quiz-option-marker">B</span>
+                            <span>Nepoužívat internet a e-mail</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="q9" value="c">
+                            <span class="quiz-option-marker">C</span>
+                            <span>Kombinace: kritické myšlení + dvoufaktorové ověření + pravidelné vzdělávání</span>
+                        </label>
+                    </div>
+                    <div class="quiz-feedback" id="q9-feedback"></div>
+                </div>
+            </div>
+
+            <!-- Navigace otázek -->
+            <div class="quiz-nav" id="quiz-nav">
+                <button class="quiz-nav-btn active" data-q="1">1</button>
+                <button class="quiz-nav-btn" data-q="2">2</button>
+                <button class="quiz-nav-btn" data-q="3">3</button>
+                <button class="quiz-nav-btn" data-q="4">4</button>
+                <button class="quiz-nav-btn" data-q="5">5</button>
+                <button class="quiz-nav-btn" data-q="6">6</button>
+                <button class="quiz-nav-btn" data-q="7">7</button>
+                <button class="quiz-nav-btn" data-q="8">8</button>
+                <button class="quiz-nav-btn" data-q="9">9</button>
+            </div>
+
+            <!-- Tlačítka -->
+            <div class="quiz-buttons">
+                <button class="quiz-btn" id="submit-btn">Ověřit odpověď</button>
+                <button class="quiz-btn-secondary hidden" id="next-btn">Další otázka →</button>
+            </div>
+        </div>
+
+        <!-- VÝSLEDKY -->
+        <div class="card score-card hidden" id="results">
+            <h2>Vaše výsledky</h2>
+            <div class="score-display" id="score-display">0/9</div>
+            <p class="score-label">správných odpovědí</p>
+            <div class="score-message" id="score-message"></div>
+        </div>
+
+        <!-- TIPY -->
+        <details>
+            <summary>Jak se bránit phishingu</summary>
+            <div class="details-content">
+                <p><strong>5 zlatých pravidel:</strong></p>
+                <ul style="padding-left: 20px;">
+                    <li>🔍 <strong>Vždy kontrolujte odesílatele</strong> - doména musí být oficiální</li>
+                    <li>⏰ <strong>Nedejte se tlačit časem</strong> - legitimní organizace netlačí na okamžitou reakci</li>
+                    <li>🔗 <strong>Neklikejte na odkazy</strong> - přejděte na web ručně přes prohlížeč</li>
+                    <li>📞 <strong>Ověřujte jiným kanálem</strong> - při pochybnostech zavolejte</li>
+                    <li>🔐 <strong>Používejte 2FA</strong> - i když někdo získá heslo, bez druhého faktoru se nepřihlásí</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>Slovníček pojmů</summary>
+            <div class="details-content">
+                <p><strong>Phishing</strong> - podvodné e-maily napodobující důvěryhodné zdroje</p>
+                <p><strong>Smishing</strong> - phishing přes SMS zprávy</p>
+                <p><strong>Vishing</strong> - phishing přes telefonní hovory (voice)</p>
+                <p><strong>Spear phishing</strong> - cílený útok na konkrétní osobu</p>
+                <p><strong>CEO fraud</strong> - podvodník se vydává za vedení firmy</p>
+                <p><strong>2FA</strong> - dvoufaktorové ověření (heslo + SMS/aplikace)</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>Co dělat, když naletím?</summary>
+            <div class="details-content">
+                <p>Pokud jste klikli na podezřelý odkaz nebo zadali údaje:</p>
+                <ul style="padding-left: 20px;">
+                    <li>Ihned změňte hesla (začněte e-mailem)</li>
+                    <li>Kontaktujte banku, pokud jde o finanční údaje</li>
+                    <li>Zkontrolujte účty - nejsou podezřelé transakce?</li>
+                    <li>Nahlaste incident na <strong>phishing@nukib.cz</strong></li>
+                    <li>Spusťte antivirovou kontrolu</li>
+                </ul>
+            </div>
+        </details>
+
+        <footer>
+            <div class="footer-logo-box">
+                <img src="img/o2-logo.png" alt="Podpořeno O2 Chytrá škola" class="o2-logo">
+            </div>
+            <p class="footer-text">Projekt pro bezpečnější internet ve Velvarech.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        let score = 0;
+        let currentQuestion = 1;
+        const totalQuestions = 9;
+        const answeredQuestions = {}; // Ukládá odpovědi {q1: {answered: true, correct: true}, ...}
+        
+        // Toast notifikace
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            // Skrýt po 3 sekundách
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Správné odpovědi a feedback
+        const quizData = {
+            q1: { correct: 'b', correctMsg: 'Správně! Oficiální doména České pošty je ceskaposta.cz, nikoliv ceska-posta-doručení.cz. Vždy ověřujte na oficiálních stránkách.', incorrectMsg: 'Pozor! Doména ceska-posta-doručení.cz není oficiální. Pravá doména je ceskaposta.cz. Nikdy neklikejte na podezřelé odkazy.' },
+            q2: { correct: 'c', correctMsg: 'Výborně! Banka NIKDY nepožaduje PIN, heslo ani jiné citlivé údaje po telefonu. Vždy zavěste a zavolejte sami na oficiální číslo.', incorrectMsg: 'Banka NIKDY nežádá PIN po telefonu! Toto je klasický vishing, tedy voice phishing. Vždy zavěste a kontaktujte banku přes oficiální kanály.' },
+            q3: { correct: 'b', correctMsg: 'Přesně tak! URL adresa je klíčová. Vždy kontrolujte, že jste na správné doméně, například csob.cz, ne cs0b.cz, a že připojení je šifrované přes HTTPS.', incorrectMsg: 'Design a loga lze snadno napodobit. Jediný spolehlivý způsob je kontrola URL adresy - správná doména a HTTPS protokol.' },
+            q4: { correct: 'a', correctMsg: 'Správně! Nikdo nerozdává iPhony náhodným lidem. Zkrácené odkazy, třeba bit.ly, často skrývají nebezpečné stránky. Toto je typický smishing.', incorrectMsg: 'Pozor! Výhry z ničeho nic neexistují. Zkrácené odkazy jsou nebezpečné - i pouhé kliknutí může vést k instalaci malwaru.' },
+            q5: { correct: 'c', correctMsg: 'Výborně! Hacknuté účty často rozesílají podvodné zprávy. Ověřte si jiným kanálem - telefonátem nebo osobně - že zprávu skutečně poslal váš přítel.', incorrectMsg: 'Účet vašeho přítele může být hacknutý! Ptát se přes stejný chat nemá smysl - odpovídat může útočník. Vždy ověřte jiným způsobem.' },
+            q6: { correct: 'b', correctMsg: 'Správně! csas.cz je oficiální doména České spořitelny. Ostatní jsou podvržené - všímejte si hlavní domény, tedy části těsně před .cz nebo .com.', incorrectMsg: 'Oficiální doména České spořitelny je csas.cz. U falešných stránek bývá název banky jen jako subdoména nebo součást delší adresy.' },
+            q7: { correct: 'b', correctMsg: 'Přesně! Spear phishing, někdy přezdívaný „rybaření s harpunou“, cílí na konkrétní osobu. Útočník využívá osobní informace jako jméno, pozice, kolegové, aby zpráva vypadala věrohodněji.', incorrectMsg: 'Spear phishing je cílený útok na konkrétní osobu. Na rozdíl od běžného phishingu útočník sbírá informace o oběti, aby útok byl přesvědčivější.' },
+            q8: { correct: 'c', correctMsg: 'Výborně! Toto je tzv. CEO fraud / BEC, tedy Business Email Compromise. Urgentnost + neobvyklá žádost = vždy ověřit jiným kanálem!', incorrectMsg: 'Toto je CEO fraud! Urgentní žádosti o peníze od "šéfa" z nefiremního e-mailu jsou typický podvod. Vždy ověřte telefonicky.' },
+            q9: { correct: 'c', correctMsg: 'Perfektní! Žádná technologie není 100%. Nejlepší ochrana je kombinace zdravého rozumu, 2FA a průběžného vzdělávání. Gratulujeme k dokončení!', incorrectMsg: 'Antivirus pomáhá, ale neochrání před vším. Nejlepší je kombinace technických opatření jako 2FA a zdravého rozumu, tedy kritického myšlení.' }
+        };
+
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // Ověřit odpověď
+        submitBtn.addEventListener('click', function() {
+            const questionId = 'q' + currentQuestion;
+            const questionEl = document.getElementById(questionId);
+            const options = questionEl.querySelectorAll('.quiz-option');
+            const feedbackEl = document.getElementById(questionId + '-feedback');
+            
+            // Zkontrolovat jestli je něco vybráno
+            let selectedValue = null;
+            let selectedOption = null;
+            options.forEach(opt => {
+                const input = opt.querySelector('input');
+                if (input.checked) {
+                    selectedValue = input.value;
+                    selectedOption = opt;
+                }
+            });
+
+            // Pokud nic není vybráno, upozornit a NEPOKRAČOVAT
+            if (!selectedValue) {
+                showToast('Vyberte prosím odpověď!');
+                return;
+            }
+
+            const data = quizData[questionId];
+            const isCorrect = selectedValue === data.correct;
+
+            // Zakázat další klikání na možnosti
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            // Zvýraznit vybranou odpověď
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+            } else {
+                selectedOption.classList.add('incorrect');
+                // Ukázat i správnou odpověď
+                options.forEach(opt => {
+                    const input = opt.querySelector('input');
+                    if (input.value === data.correct) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Zobrazit feedback
+            if (isCorrect) {
+                score++;
+                feedbackEl.className = 'quiz-feedback show correct';
+                feedbackEl.innerHTML = data.correctMsg;
+            } else {
+                feedbackEl.className = 'quiz-feedback show incorrect';
+                feedbackEl.innerHTML = data.incorrectMsg;
+            }
+
+            // Uložit odpověď
+            answeredQuestions[questionId] = { answered: true, correct: isCorrect };
+            
+            // Aktualizovat navigaci
+            updateNavButton(currentQuestion, isCorrect);
+            updateLockedButtons();
+
+            // Skrýt tlačítko Ověřit, zobrazit Další
+            submitBtn.classList.add('hidden');
+            
+            // Pokud je to poslední otázka, zobrazit "Zobrazit výsledky"
+            if (Object.keys(answeredQuestions).length === totalQuestions) {
+                nextBtn.textContent = 'Zobrazit výsledky';
+            } else {
+                nextBtn.textContent = 'Další otázka →';
+            }
+            nextBtn.classList.remove('hidden');
+        });
+
+        // Další otázka
+        nextBtn.addEventListener('click', function() {
+            // Pokud jsou všechny zodpovězené, zobrazit výsledky
+            if (Object.keys(answeredQuestions).length === totalQuestions) {
+                showResults();
+                return;
+            }
+
+            // Najít další nezodpovězenou otázku
+            let nextQ = currentQuestion;
+            for (let i = 1; i <= totalQuestions; i++) {
+                nextQ = (currentQuestion % totalQuestions) + 1;
+                currentQuestion = nextQ;
+                if (!answeredQuestions['q' + nextQ]) {
+                    break;
+                }
+            }
+
+            goToQuestion(nextQ);
+        });
+
+        // Navigace - klik na číslo otázky
+        document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const qNum = parseInt(this.dataset.q);
+                
+                // Povolit pouze zodpovězené otázky nebo aktuální
+                if (qNum > Object.keys(answeredQuestions).length + 1) {
+                    showToast('Nejprve odpovězte na aktuální otázku!');
+                    return;
+                }
+                
+                goToQuestion(qNum);
+            });
+        });
+
+        function goToQuestion(qNum) {
+            // Skrýt všechny otázky
+            document.querySelectorAll('.question-slide').forEach(q => q.classList.add('hidden'));
+            
+            // Zobrazit vybranou otázku
+            document.getElementById('q' + qNum).classList.remove('hidden');
+            
+            // Aktualizovat current
+            currentQuestion = qNum;
+            
+            // Aktualizovat navigaci (aktivní tlačítko)
+            document.querySelectorAll('.quiz-nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]').classList.add('active');
+            
+            // Aktualizovat progress
+            updateProgress();
+            
+            // Zobrazit správné tlačítko
+            if (answeredQuestions['q' + qNum]) {
+                submitBtn.classList.add('hidden');
+                if (Object.keys(answeredQuestions).length === totalQuestions) {
+                    nextBtn.textContent = 'Zobrazit výsledky';
+                } else {
+                    nextBtn.textContent = 'Další otázka →';
+                }
+                nextBtn.classList.remove('hidden');
+            } else {
+                submitBtn.classList.remove('hidden');
+                nextBtn.classList.add('hidden');
+            }
+        }
+
+        function updateNavButton(qNum, isCorrect) {
+            const navBtn = document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]');
+            navBtn.classList.remove('active');
+            if (isCorrect) {
+                navBtn.classList.add('answered-correct');
+            } else {
+                navBtn.classList.add('answered-wrong');
+            }
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answeredQuestions).length;
+            const progress = (answered / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('current-question').textContent = currentQuestion;
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            const resultsEl = document.getElementById('results');
+            resultsEl.classList.remove('hidden');
+            document.getElementById('score-display').textContent = score + '/' + totalQuestions;
+            
+            let message = '';
+            const percentage = (score / totalQuestions) * 100;
+            
+            if (percentage === 100) {
+                message = 'Vynikající! Jste expert na rozpoznávání phishingu. Nezapomeňte své znalosti sdílet s ostatními.';
+            } else if (percentage >= 70) {
+                message = 'Skvělá práce! Máte solidní znalosti. Pár detailů k doplnění, ale základy máte výborné.';
+            } else if (percentage >= 50) {
+                message = 'Dobrý základ, ale doporučujeme prostudovat tipy výše. Phishing je stále sofistikovanější.';
+            } else {
+                message = 'Je čas na doplnění znalostí. Projděte si sekce s tipy a slovníčkem. Phishing může potkat každého.';
+            }
+            
+            document.getElementById('score-message').textContent = message;
+            resultsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Handle option selection
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionEl = this.closest('.question-slide');
+                const qId = questionEl.id;
+                
+                // Pokud už je zodpovězená, nic nedělat
+                if (answeredQuestions[qId]) return;
+                
+                const input = this.querySelector('input');
+                
+                // Remove selected from siblings
+                questionEl.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected to clicked
+                this.classList.add('selected');
+                input.checked = true;
+            });
+        });
+
+        // Aktualizovat zamčená tlačítka navigace
+        function updateLockedButtons() {
+            const answeredCount = Object.keys(answeredQuestions).length;
+            document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+                const qNum = parseInt(btn.dataset.q);
+                // Odemknout jen zodpovězené + aktuální (další v pořadí)
+                if (qNum > answeredCount + 1) {
+                    btn.classList.add('locked');
+                } else {
+                    btn.classList.remove('locked');
+                }
+            });
+        }
+
+        // Inicializace - zamknout všechna tlačítka kromě prvního
+        updateLockedButtons();
+    </script>
+
+</body>
+</html>

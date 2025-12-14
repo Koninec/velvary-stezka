@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Kyber stezka Velvary">
+    <meta property="og:description" content="Mobilní stezka pro rodiče a děti: 9 stanovišť s úkoly a tipy ke kyberbezpečnosti.">
+
+    <title>Kyber stezka Velvary</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0090D6;
+            --primary-dark: #005BBB;
+            --accent: #00D6D6; 
+            --bg-color: #F2F4F8;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --radius: 24px;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 24px 45px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 91, 187, 0.25);
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            font-size: 1.9rem;
+            line-height: 1.15;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-subtitle {
+            margin-top: 10px;
+            opacity: 0.92;
+            font-size: 0.95rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: -35px auto 0;
+            padding: 0 20px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background-color: #E0F2FE;
+            color: var(--primary-dark);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        p { margin-bottom: 15px; font-size: 0.95rem; color: var(--text-muted); }
+        strong { color: var(--text-main); font-weight: 600; }
+
+        .tip-box {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .tip-box-title {
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        .tip-box p {
+            color: #78350F;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .station-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .station-link {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 14px 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            transition: background 0.2s, transform 0.15s, border-color 0.2s;
+        }
+
+        .station-link:hover { background: #f1f5f9; border-color: #cbd5e1; transform: translateY(-1px); }
+        .station-link:active { transform: translateY(0); }
+        .station-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+        .station-num {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-right: 12px;
+        }
+
+        .station-meta { flex: 1; }
+        .station-title { display: block; }
+        .station-subtitle { display: block; font-weight: 500; color: #64748b; font-size: 0.85rem; margin-top: 2px; }
+
+        .station-arrow { margin-left: 10px; color: #64748b; font-weight: 800; }
+
+        footer { text-align: center; padding-top: 30px; }
+        .footer-logo-box {
+            background: white;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .o2-logo { height: 40px; width: auto; display: block; }
+        .footer-text { font-size: 0.75rem; opacity: 0.65; margin: 0; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="location-badge">Kyber stezka • 9 stanovišť</span>
+        <h1>Kyber stezka<br>Velvary</h1>
+        <div class="header-subtitle">Krátké, srozumitelné úkoly pro rodiče a děti. Mobilní formát - otevřete a pokračujte na stanoviště.</div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-icon" aria-hidden="true">🧭</div>
+            <h2>O projektu</h2>
+            <p>Stezka má <strong>9 samostatných stanovišť</strong>. Každé obsahuje krátké vysvětlení tématu, praktické tipy a úkol/kvíz pro rodinu. Úkoly na sebe nenavazují - můžete začít kdekoli.</p>
+            <div class="tip-box">
+                <div class="tip-box-title">Jak na to</div>
+                <p>Vyberte stanoviště níže. Pokud jste na místě podle QR kódu, naskenujte ho, pokud si chcete prohlédnout i jiná stanoviště, klikněte na odkaz níže.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-icon" aria-hidden="true">📍</div>
+            <h2>Stanoviště</h2>
+            <div class="station-list">
+                <a class="station-link" href="ms.html">
+                    <span class="station-num">1</span>
+                    <span class="station-meta">
+                        <span class="station-title">MŠ Velvary</span>
+                        <span class="station-subtitle">Sharenting: sdílení dětí online</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="zs.html">
+                    <span class="station-num">2</span>
+                    <span class="station-meta">
+                        <span class="station-title">ZŠ Velvary</span>
+                        <span class="station-subtitle">Algoritmy a závislost: kdo řídí tvůj feed?</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="zus.html">
+                    <span class="station-num">3</span>
+                    <span class="station-meta">
+                        <span class="station-title">ZUŠ Velvary</span>
+                        <span class="station-subtitle">AI a deepfakes: umění nebo podvod</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="zalozna.html">
+                    <span class="station-num">4</span>
+                    <span class="station-meta">
+                        <span class="station-title">Záložna</span>
+                        <span class="station-subtitle">Veřejná Wi‑Fi a QR kódy</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="radnice.html">
+                    <span class="station-num">5</span>
+                    <span class="station-meta">
+                        <span class="station-title">Radnice</span>
+                        <span class="station-subtitle">Dezinformace a vishing</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="slovan.html">
+                    <span class="station-num">6</span>
+                    <span class="station-meta">
+                        <span class="station-title">Slovan Velvary</span>
+                        <span class="station-subtitle">Fair play online: slova, stopa, respekt</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="rybnik.html">
+                    <span class="station-num">7</span>
+                    <span class="station-meta">
+                        <span class="station-title">Malovarský rybník</span>
+                        <span class="station-subtitle">Phishing: rybáři vs. kyber-rybáři</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="kostka.html">
+                    <span class="station-num">8</span>
+                    <span class="station-meta">
+                        <span class="station-title">Velvarská Kostka</span>
+                        <span class="station-subtitle">Wellbeing a digitální detox</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+                <a class="station-link" href="knihovna.html">
+                    <span class="station-num">9</span>
+                    <span class="station-meta">
+                        <span class="station-title">Knihovna</span>
+                        <span class="station-subtitle">AI halucinace a ověřování faktů</span>
+                    </span>
+                    <span class="station-arrow">›</span>
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-logo-box">
+                <img src="img/o2-logo.png" alt="Podpořeno O2 Chytrá škola" class="o2-logo" onerror="this.insertAdjacentHTML('afterend','<span class=&quot;footer-text&quot;>Podpořeno: O2 Chytrá škola</span>'); this.remove();">
+            </div>
+            <p class="footer-text">Projekt pro bezpečnější internet ve Velvarech.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
+
+

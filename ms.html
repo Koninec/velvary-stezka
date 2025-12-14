@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Sharenting - MŠ Velvary">
+    <meta property="og:description" content="Interaktivní úkol o sharentingu - bezpečné sdílení fotek a informací o dětech">
+
+    <title>Sharenting - MŠ Velvary | Kyber stezka Velvary</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0090D6;
+            --primary-dark: #005BBB;
+            --accent: #00D6D6; 
+            --bg-color: #F2F4F8;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --radius: 24px;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 24px 45px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 91, 187, 0.25);
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .station-nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            line-height: 1;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .station-nav:hover { background: rgba(255, 255, 255, 0.28); transform: translateY(-1px); }
+        .station-nav:active { transform: translateY(0); }
+        .station-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        .station-label { display: inline; }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 600px;
+            margin: -35px auto 0;
+            padding: 0 20px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* KARTY */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background-color: #E0F2FE;
+            color: var(--primary-dark);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .card-icon svg { width: 28px; height: 28px; }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        p { margin-bottom: 15px; font-size: 0.95rem; color: var(--text-muted); }
+        
+        strong { color: var(--text-main); font-weight: 600; }
+
+        .intro-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .intro-card .card-icon { background: #E0F2FE; }
+
+        .tip-box {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .tip-box-title {
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        .tip-box p {
+            color: #78350F;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, #FEE2E2, #FECACA);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--error);
+        }
+
+        .danger-box-title {
+            font-weight: 700;
+            color: #991B1B;
+            margin-bottom: 8px;
+        }
+
+        .danger-box p {
+            color: #7F1D1D;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .scenario-box {
+            background: #FEF3C7;
+            border: 2px dashed var(--warning);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        .scenario-box .scenario-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #92400E;
+        }
+
+        .scenario-box .red {
+            color: #DC2626;
+            font-weight: 700;
+        }
+
+        /* ROZBALOVACÍ DETAILY (MODAL STYLE) */
+        details {
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 144, 214, 0.15);
+        }
+
+        summary {
+            padding: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: '+'; 
+            font-size: 1.5rem;
+            line-height: 0;
+            font-weight: 400;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after { transform: rotate(45deg); }
+
+        .details-content {
+            padding: 0 18px 20px 18px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #f3f4f6;
+            margin-top: -5px;
+            padding-top: 15px;
+        }
+
+        /* QUIZ */
+        .quiz-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .hidden { display: none !important; }
+
+        #questions-wrapper {
+            margin: 20px 0;
+            min-height: 280px;
+        }
+
+        .question-slide { animation: fadeIn 0.25s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .quiz-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .quiz-question-text { flex: 1; }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .quiz-option:hover {
+            background: #f8fafc;
+            border-color: var(--primary);
+        }
+
+        .quiz-option.selected {
+            background: #E0F2FE;
+            border-color: var(--primary);
+        }
+
+        .quiz-option.correct {
+            background: #D1FAE5;
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: #FEE2E2;
+            border-color: var(--error);
+        }
+
+        .quiz-option input { display: none; }
+
+        .quiz-option-marker {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .quiz-option.selected .quiz-option-marker {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .quiz-option.correct .quiz-option-marker {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .quiz-option.incorrect .quiz-option-marker {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
+        .quiz-feedback {
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .quiz-feedback.show { display: block; }
+
+        .quiz-feedback.correct {
+            background: #D1FAE5;
+            border: 1px solid #10B981;
+            color: #065F46;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #FEE2E2;
+            border: 1px solid #EF4444;
+            color: #991B1B;
+        }
+
+        .quiz-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .quiz-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #E5E7EB;
+            background: white;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-nav-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .quiz-nav-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .quiz-nav-btn.answered-correct {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .quiz-nav-btn.answered-wrong {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
+        .quiz-nav-btn.locked {
+            background: #F3F4F6;
+            border-color: #E5E7EB;
+            color: #CBD5E1;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .quiz-nav-btn.locked:hover {
+            border-color: #E5E7EB;
+            color: #CBD5E1;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .quiz-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .quiz-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quiz-btn-secondary {
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-btn-secondary:hover { background: #E0F2FE; }
+
+        .quiz-btn-secondary:disabled {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .score-card h2 { color: white; margin-bottom: 20px; }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .score-label { opacity: 0.9; margin-top: 10px; }
+
+        .score-message {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, var(--warning) 0%, #D97706 100%);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.4);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* FOOTER */
+        footer { text-align: center; padding-top: 30px; }
+        .footer-logo-box {
+            background: white;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .o2-logo { height: 40px; width: auto; display: block; }
+        .footer-text { font-size: 0.75rem; opacity: 0.6; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast">
+        <span id="toast-message">Vyberte prosím odpověď!</span>
+    </div>
+
+    <header>
+        <span class="location-badge">
+            <a class="station-nav prev" href="knihovna.html" aria-label="Předchozí stanoviště">‹</a>
+            <a class="station-nav home" href="index.html" aria-label="Domů">🏠</a>
+            <span class="station-label">Stanoviště 1/9 - MŠ Velvary</span>
+            <a class="station-nav next" href="zs.html" aria-label="Další stanoviště">›</a>
+        </span>
+        <h1>Sharenting: Sdílení dětí online</h1>
+    </header>
+
+    <div class="container">
+
+        <div class="card intro-card">
+            <div class="card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 9V7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h2>Co je sharenting?</h2>
+            <p><strong>Sharenting</strong> (share + parenting) je sdílení fotek, videí a informací o dětech na internetu. Často je to nevinné, ale některé detaily mohou dítě zbytečně ohrozit (soukromí, bezpečí, reputace).</p>
+            <p>U malých dětí rozhoduje rodič. Cíl je jednoduchý: sdílet radost tak, aby dítě mělo co nejmenší digitální stopu a co největší kontrolu, až vyroste.</p>
+
+            <div class="tip-box">
+                <div class="tip-box-title">Rychlé pravidlo</div>
+                <p>Pokud by vám jednou vadilo, že stejnou fotku bude někdo ukazovat vašemu dítěti ve škole, raději ji nesdílejte veřejně.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Co může být problém</h2>
+            <p>Některé příspěvky vypadají neškodně, ale dohromady dokáží prozradit hodně: kde dítě bydlí, kam chodí, jak se jmenuje, kdy je samo doma, nebo jaké má zvyky.</p>
+            <div class="danger-box">
+                <div class="danger-box-title">Pozor na detaily</div>
+                <p>Adresa na pozadí, název školy na tričku, viditelný rozvrh, SPZ auta, geotag v fotce, narozeninová pozvánka s časem a místem.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Ukázka situace</h2>
+            <p>Vyberte, co je na příspěvku nejrizikovější:</p>
+            <div class="scenario-box">
+                <div class="scenario-title">Příspěvek rodiče</div>
+                <p>"První den ve školce! <span class="red">MŠ Velvary</span>, třída Motýlci. 
+                Zítra máme sraz v <span class="red">7:30</span> u hlavního vchodu."</p>
+                <p><span class="red">Viditelné</span>: jméno na jmenovce, tričko s logem školky, a fotka je veřejná.</p>
+            </div>
+            <div class="tip-box">
+                <div class="tip-box-title">Bezpečnější varianta</div>
+                <p>Sdílejte bez názvu školky/třídy/času, bez jmenovky, bez obličeje (nebo jen do rodinné skupiny) a bez veřejného publika.</p>
+            </div>
+        </div>
+
+        <div class="quiz-card card" id="quiz-container">
+            <h2>Kvíz: sdílím bezpečně?</h2>
+            <div class="progress-text">Otázka <span id="current-question">1</span> z 9</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+            </div>
+
+            <div id="questions-wrapper">
+                <div class="question-slide" id="q1">
+                    <div class="quiz-question">
+                        <span class="quiz-number">1</span>
+                        <span class="quiz-question-text">Chci dát na veřejný profil fotku dítěte před školkou. Co je nejlepší první krok?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q1" value="a"><span class="quiz-option-marker">A</span><span>Hlavně přidat hezký popisek s názvem školky</span></label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="b"><span class="quiz-option-marker">B</span><span>Zkontrolovat, zda nejsou vidět jména, logo školy, adresa nebo jiné identifikátory</span></label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="c"><span class="quiz-option-marker">C</span><span>Vypnout komentáře a je to bezpečné</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q1-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q2">
+                    <div class="quiz-question">
+                        <span class="quiz-number">2</span>
+                        <span class="quiz-question-text">Je „soukromá“ facebooková skupina automaticky bezpečná pro sdílení fotek dětí?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q2" value="a"><span class="quiz-option-marker">A</span><span>Ano, protože obsah uvidí jen členové</span></label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="b"><span class="quiz-option-marker">B</span><span>Záleží na nastavení a členech; i člen může obsah přeposlat nebo udělat screenshot</span></label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="c"><span class="quiz-option-marker">C</span><span>Bezpečné je to jen tehdy, když skupina má více než 100 členů</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q2-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q3">
+                    <div class="quiz-question">
+                        <span class="quiz-number">3</span>
+                        <span class="quiz-question-text">Co je nejrizikovější sdílet v jednom příspěvku?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q3" value="a"><span class="quiz-option-marker">A</span><span>Fotku bez obličeje a bez popisku</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="b"><span class="quiz-option-marker">B</span><span>Jméno dítěte, název školy/třídy a pravidelný čas příchodu</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="c"><span class="quiz-option-marker">C</span><span>Fotku kresby z domu bez dalších detailů</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q3-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q4">
+                    <div class="quiz-question">
+                        <span class="quiz-number">4</span>
+                        <span class="quiz-question-text">Která věc pomůže nejvíc snížit riziko u fotek dětí?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q4" value="a"><span class="quiz-option-marker">A</span><span>Vypnout lajky</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="b"><span class="quiz-option-marker">B</span><span>Omezit publikum na přátele/rodinu a odstranit identifikátory, třeba jmenovky a logo školy</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="c"><span class="quiz-option-marker">C</span><span>Používat jen hezké filtry</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q4-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q5">
+                    <div class="quiz-question">
+                        <span class="quiz-number">5</span>
+                        <span class="quiz-question-text">Fotka je „jen pro přátele“, ale v pozadí je vidět domovní číslo. Co uděláte?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q5" value="a"><span class="quiz-option-marker">A</span><span>Nic, protože přátelé jsou důvěryhodní</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="b"><span class="quiz-option-marker">B</span><span>Fotku upravím, třeba ji oříznu nebo rozmažu, nebo ji nesdílím</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="c"><span class="quiz-option-marker">C</span><span>Přidám do popisku, kde přesně bydlíme, ať to všichni ví</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q5-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q6">
+                    <div class="quiz-question">
+                        <span class="quiz-number">6</span>
+                        <span class="quiz-question-text">Kdy je dobré začít respektovat souhlas dítěte se sdílením?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q6" value="a"><span class="quiz-option-marker">A</span><span>Až v 18 letech</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="b"><span class="quiz-option-marker">B</span><span>Co nejdřív, jakmile to dítě dokáže vnímat, a postupně ho učit říkat ano/ne</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="c"><span class="quiz-option-marker">C</span><span>Nikdy, rodič si může sdílet co chce</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q6-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q7">
+                    <div class="quiz-question">
+                        <span class="quiz-number">7</span>
+                        <span class="quiz-question-text">Proč je rizikové sdílet fotky dětí v plavkách/na nočníku nebo jiné intimní situace?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q7" value="a"><span class="quiz-option-marker">A</span><span>Není to rizikové, je to přece roztomilé</span></label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="b"><span class="quiz-option-marker">B</span><span>Může to dítěti ublížit, třeba ponižováním, zneužitím a digitální stopou, kterou neovlivní</span></label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="c"><span class="quiz-option-marker">C</span><span>Rizikové je to jen když má fotka hodně lajků</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q7-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q8">
+                    <div class="quiz-question">
+                        <span class="quiz-number">8</span>
+                        <span class="quiz-question-text">Co je bezpečnější varianta, když chci rodině ukázat fotky dětí?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q8" value="a"><span class="quiz-option-marker">A</span><span>Veřejný příspěvek na Instagramu</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="b"><span class="quiz-option-marker">B</span><span>Soukromé sdílení malé skupině, v soukromém albu nebo přímo a bez citlivých detailů</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="c"><span class="quiz-option-marker">C</span><span>Přidat dítě do veřejného videa s adresou</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q8-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q9">
+                    <div class="quiz-question">
+                        <span class="quiz-number">9</span>
+                        <span class="quiz-question-text">Co uděláte, když už je online něco, co dítě nechce mít zveřejněné?</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q9" value="a"><span class="quiz-option-marker">A</span><span>Ignoruji to, internet nezapomíná</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="b"><span class="quiz-option-marker">B</span><span>Smažu příspěvek / omezím viditelnost a zkontroluji, kde všude byl sdílen</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="c"><span class="quiz-option-marker">C</span><span>Udělám z toho veřejný příspěvek, aby to viděli všichni</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q9-feedback"></div>
+                </div>
+            </div>
+
+            <div class="quiz-nav" id="quiz-nav">
+                <button class="quiz-nav-btn active" data-q="1">1</button>
+                <button class="quiz-nav-btn" data-q="2">2</button>
+                <button class="quiz-nav-btn" data-q="3">3</button>
+                <button class="quiz-nav-btn" data-q="4">4</button>
+                <button class="quiz-nav-btn" data-q="5">5</button>
+                <button class="quiz-nav-btn" data-q="6">6</button>
+                <button class="quiz-nav-btn" data-q="7">7</button>
+                <button class="quiz-nav-btn" data-q="8">8</button>
+                <button class="quiz-nav-btn" data-q="9">9</button>
+            </div>
+
+            <div class="quiz-buttons">
+                <button class="quiz-btn" id="submit-btn">Ověřit odpověď</button>
+                <button class="quiz-btn-secondary hidden" id="next-btn">Další otázka →</button>
+            </div>
+        </div>
+
+        <div class="card score-card hidden" id="results">
+            <h2>Vaše výsledky</h2>
+            <div class="score-display" id="score-display">0/9</div>
+            <p class="score-label">správných odpovědí</p>
+            <div class="score-message" id="score-message"></div>
+        </div>
+
+        <details>
+            <summary>Kontrolní seznam před sdílením</summary>
+            <div class="details-content">
+                <ul style="padding-left: 20px; margin: 10px 0;">
+                    <li>Je to nutné sdílet veřejně, nebo stačí rodině?</li>
+                    <li>Nejde z toho poznat škola, bydliště, jméno nebo pravidelný čas?</li>
+                    <li>Není to pro dítě ponižující nebo příliš osobní?</li>
+                    <li>Nejsou v záběru jiné děti bez souhlasu jejich rodičů?</li>
+                    <li>Můžu to klidně ukázat dítěti i za 10 let?</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>Jak zmenšit digitální stopu</summary>
+            <div class="details-content">
+                <ul style="padding-left: 20px; margin: 10px 0;">
+                    <li>Omezte publikum (přátelé / vlastní seznam).</li>
+                    <li>Vypněte geolokaci u fotoaparátu nebo odstraňte polohu z příspěvku.</li>
+                    <li>Ořízněte jmenovky, loga a citlivé detaily v pozadí.</li>
+                    <li>U fotek dětí zvažte nezveřejňovat obličej nebo sdílet jen výjimečně.</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>Co když už je to venku?</summary>
+            <div class="details-content">
+                <p>Nejdůležitější je reagovat rychle a klidně:</p>
+                <ul style="padding-left: 20px; margin: 10px 0;">
+                    <li>Smažte příspěvek nebo nastavte přísnější viditelnost.</li>
+                    <li>Zkontrolujte, zda nebyl sdílen dál (komentáře, sdílení, screenshoty).</li>
+                    <li>Požádejte o odstranění, pokud obsah sdílí někdo jiný.</li>
+                    <li>Domluvte se s dítětem na pravidlech do budoucna.</li>
+                </ul>
+            </div>
+        </details>
+
+        <footer>
+            <div class="footer-logo-box">
+                <img src="img/o2-logo.png" alt="Podpořeno O2 Chytrá škola" class="o2-logo">
+            </div>
+            <p class="footer-text">Projekt pro bezpečnější internet ve Velvarech.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        let score = 0;
+        let currentQuestion = 1;
+        const totalQuestions = 9;
+        const answeredQuestions = {};
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        const quizData = {
+            q1: {
+                correct: 'b',
+                correctMsg: 'Správně. Nejdřív zkontrolujte, co fotka prozrazuje: jména, logo školy, adresa, rozvrh, SPZ, poloha.',
+                incorrectMsg: 'Pozor. Nejprve zkontrolujte identifikátory a citlivé detaily. Popisek s názvem školy nebo vypnuté komentáře riziko neřeší.'
+            },
+            q2: {
+                correct: 'b',
+                correctMsg: 'Správně. I v soukromé skupině může někdo obsah přeposlat nebo udělat screenshot. Důležité je, kdo je členem a jaká jsou pravidla.',
+                incorrectMsg: 'Ne tak úplně. Soukromá skupina není záruka: členové mohou obsah přeposílat nebo dělat screenshoty. Záleží na lidech a nastavení.'
+            },
+            q3: {
+                correct: 'b',
+                correctMsg: 'Správně. Kombinace jména, školy a času tvoří velmi přesný profil a může zvyšovat riziko zneužití.',
+                incorrectMsg: 'Pozor. Nejrizikovější jsou identifikátory a rutiny: jméno, škola/třída a pravidelný čas.'
+            },
+            q4: {
+                correct: 'b',
+                correctMsg: 'Správně. Nejvíc pomůže zmenšit publikum a odstranit identifikátory - jmenovky, loga, adresy - a polohu.',
+                incorrectMsg: 'Ne. Lajky ani filtry bezpečnost neřeší. Klíčové je publikum a odstranění identifikátorů/polohy.'
+            },
+            q5: {
+                correct: 'b',
+                correctMsg: 'Správně. Oříznutí nebo rozmazání detailů je jednoduchý způsob, jak snížit riziko.',
+                incorrectMsg: 'Pozor. I mezi přáteli se může obsah šířit dál. Citlivé detaily v pozadí raději odstraňte.'
+            },
+            q6: {
+                correct: 'b',
+                correctMsg: 'Správně. Souhlas učte postupně a co nejdřív. Pomáhá to dítěti budovat hranice a kontrolu nad vlastním soukromím.',
+                incorrectMsg: 'Ne. Souhlas je dobré respektovat co nejdřív, jakmile to dítě dokáže vnímat, a postupně ho to učit.'
+            },
+            q7: {
+                correct: 'b',
+                correctMsg: 'Správně. Intimní obsah může dítěti ublížit a může být zneužit. Digitální stopa se šíří a špatně se bere zpět.',
+                incorrectMsg: 'Pozor. Intimní situace jsou rizikové: reputace, ponižování, zneužití a dlouhá digitální stopa.'
+            },
+            q8: {
+                correct: 'b',
+                correctMsg: 'Správně. Soukromé sdílení malé skupině a bez citlivých detailů je bezpečnější než veřejný post.',
+                incorrectMsg: 'Ne. Bezpečnější je soukromé sdílení malé skupině a bez citlivých detailů.'
+            },
+            q9: {
+                correct: 'b',
+                correctMsg: 'Správně. Omezte šíření: smažte/omezte viditelnost a řešte kopie či další sdílení, pokud to jde.',
+                incorrectMsg: 'Ne. Má smysl obsah odstranit nebo omezit viditelnost a zkontrolovat, kde se dá ještě stáhnout.'
+            }
+        };
+
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        submitBtn.addEventListener('click', function () {
+            const questionId = 'q' + currentQuestion;
+            const questionEl = document.getElementById(questionId);
+            const options = questionEl.querySelectorAll('.quiz-option');
+            const feedbackEl = document.getElementById(questionId + '-feedback');
+
+            let selectedValue = null;
+            let selectedOption = null;
+            options.forEach(opt => {
+                const input = opt.querySelector('input');
+                if (input.checked) {
+                    selectedValue = input.value;
+                    selectedOption = opt;
+                }
+            });
+
+            if (!selectedValue) {
+                showToast('Vyberte prosím odpověď!');
+                return;
+            }
+
+            const data = quizData[questionId];
+            const isCorrect = selectedValue === data.correct;
+
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+            } else {
+                selectedOption.classList.add('incorrect');
+                options.forEach(opt => {
+                    const input = opt.querySelector('input');
+                    if (input.value === data.correct) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            if (isCorrect) {
+                score++;
+                feedbackEl.className = 'quiz-feedback show correct';
+                feedbackEl.innerHTML = data.correctMsg;
+            } else {
+                feedbackEl.className = 'quiz-feedback show incorrect';
+                feedbackEl.innerHTML = data.incorrectMsg;
+            }
+
+            answeredQuestions[questionId] = { answered: true, correct: isCorrect };
+            updateNavButton(currentQuestion, isCorrect);
+            updateLockedButtons();
+
+            submitBtn.classList.add('hidden');
+            nextBtn.textContent = (Object.keys(answeredQuestions).length === totalQuestions)
+                ? 'Zobrazit výsledky'
+                : 'Další otázka →';
+            nextBtn.classList.remove('hidden');
+        });
+
+        nextBtn.addEventListener('click', function () {
+            if (Object.keys(answeredQuestions).length === totalQuestions) {
+                showResults();
+                return;
+            }
+
+            let nextQ = currentQuestion;
+            for (let i = 1; i <= totalQuestions; i++) {
+                nextQ = (currentQuestion % totalQuestions) + 1;
+                currentQuestion = nextQ;
+                if (!answeredQuestions['q' + nextQ]) {
+                    break;
+                }
+            }
+
+            goToQuestion(nextQ);
+        });
+
+        document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const qNum = parseInt(this.dataset.q);
+                if (qNum > Object.keys(answeredQuestions).length + 1) {
+                    showToast('Nejprve odpovězte na aktuální otázku!');
+                    return;
+                }
+                goToQuestion(qNum);
+            });
+        });
+
+        function goToQuestion(qNum) {
+            document.querySelectorAll('.question-slide').forEach(q => q.classList.add('hidden'));
+            document.getElementById('q' + qNum).classList.remove('hidden');
+            currentQuestion = qNum;
+
+            document.querySelectorAll('.quiz-nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]').classList.add('active');
+
+            updateProgress();
+
+            if (answeredQuestions['q' + qNum]) {
+                submitBtn.classList.add('hidden');
+                nextBtn.textContent = (Object.keys(answeredQuestions).length === totalQuestions)
+                    ? 'Zobrazit výsledky'
+                    : 'Další otázka →';
+                nextBtn.classList.remove('hidden');
+            } else {
+                submitBtn.classList.remove('hidden');
+                nextBtn.classList.add('hidden');
+            }
+        }
+
+        function updateNavButton(qNum, isCorrect) {
+            const navBtn = document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]');
+            navBtn.classList.remove('active');
+            navBtn.classList.toggle('answered-correct', isCorrect);
+            navBtn.classList.toggle('answered-wrong', !isCorrect);
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answeredQuestions).length;
+            const progress = (answered / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('current-question').textContent = currentQuestion;
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            const resultsEl = document.getElementById('results');
+            resultsEl.classList.remove('hidden');
+            document.getElementById('score-display').textContent = score + '/' + totalQuestions;
+
+            const percentage = (score / totalQuestions) * 100;
+            let message = '';
+            if (percentage === 100) {
+                message = 'Výborně. Sdílíte promyšleně a s respektem k soukromí dítěte.';
+            } else if (percentage >= 70) {
+                message = 'Skvělý základ. Zkuste si pohlídat hlavně identifikátory (škola, jméno, poloha) a publikum.';
+            } else if (percentage >= 50) {
+                message = 'Dobrá snaha. Projděte si kontrolní seznam a nastavte si přísnější publikum.';
+            } else {
+                message = 'Doporučení: sdílejte méně veřejně a více kontrolujte detaily na fotkách. Digitální stopa se buduje snadno.';
+            }
+
+            document.getElementById('score-message').textContent = message;
+            resultsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const questionEl = this.closest('.question-slide');
+                const qId = questionEl.id;
+                if (answeredQuestions[qId]) return;
+
+                const input = this.querySelector('input');
+                questionEl.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                input.checked = true;
+            });
+        });
+
+        function updateLockedButtons() {
+            const answeredCount = Object.keys(answeredQuestions).length;
+            document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+                const qNum = parseInt(btn.dataset.q);
+                if (qNum > answeredCount + 1) {
+                    btn.classList.add('locked');
+                } else {
+                    btn.classList.remove('locked');
+                }
+            });
+        }
+
+        updateLockedButtons();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="ZUŠ Velvary - Generativní AI a deepfakes">
+    <meta property="og:description" content="Umění, realita a generativní AI. Poznáš, co je pravda?">
+    
+    <title>ZUŠ Velvary - Generativní AI a deepfakes | Kyber stezka Velvary</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0090D6;
+            --primary-dark: #005BBB;
+            --accent: #00D6D6; 
+            --bg-color: #F2F4F8;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --radius: 24px;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 24px 45px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 91, 187, 0.25);
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .station-nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            line-height: 1;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .station-nav:hover { background: rgba(255, 255, 255, 0.28); transform: translateY(-1px); }
+        .station-nav:active { transform: translateY(0); }
+        .station-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        .station-label { display: inline; }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 600px;
+            margin: -35px auto 0;
+            padding: 0 20px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* KARTY */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background-color: #E0F2FE;
+            color: var(--primary-dark);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .card-icon svg { width: 28px; height: 28px; }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        p { margin-bottom: 15px; font-size: 0.95rem; color: var(--text-muted); }
+        
+        strong { color: var(--text-main); font-weight: 600; }
+
+        .header-subtitle {
+            margin-top: 10px;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .intro-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .intro-card .card-icon { background: #E0F2FE; }
+
+        .tip-box {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .tip-box-title {
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        .tip-box p {
+            color: #78350F;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, #FEE2E2, #FECACA);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--error);
+        }
+
+        .danger-box-title {
+            font-weight: 700;
+            color: #991B1B;
+            margin-bottom: 8px;
+        }
+
+        .danger-box p {
+            color: #7F1D1D;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .scenario-box {
+            background: #FEF3C7;
+            border: 2px dashed var(--warning);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        .scenario-box .scenario-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #92400E;
+        }
+
+        .scenario-box .red {
+            color: #DC2626;
+            font-weight: 700;
+        }
+
+        /* QUIZ */
+        .quiz-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .hidden { display: none !important; }
+
+        #questions-wrapper { margin-bottom: 10px; }
+
+        .quiz-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .quiz-question-text { flex: 1; }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .quiz-option:hover { background: #f8fafc; border-color: var(--primary); }
+        .quiz-option.selected { background: #E0F2FE; border-color: var(--primary); }
+        .quiz-option.correct { background: #D1FAE5; border-color: var(--success); }
+        .quiz-option.incorrect { background: #FEE2E2; border-color: var(--error); }
+        .quiz-option input { display: none; }
+
+        .quiz-option-marker {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .quiz-option.selected .quiz-option-marker { background: var(--primary); border-color: var(--primary); color: white; }
+        .quiz-option.correct .quiz-option-marker { background: var(--success); border-color: var(--success); color: white; }
+        .quiz-option.incorrect .quiz-option-marker { background: var(--error); border-color: var(--error); color: white; }
+
+        .quiz-feedback {
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+        .quiz-feedback.incorrect { background: #FEE2E2; color: #7F1D1D; border: 1px solid #FCA5A5; }
+
+        .quiz-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .quiz-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #E5E7EB;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .quiz-nav-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+        .quiz-nav-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+        .quiz-nav-btn.answered-correct { background: var(--success); border-color: var(--success); color: white; }
+        .quiz-nav-btn.answered-wrong { background: var(--error); border-color: var(--error); color: white; }
+
+        .quiz-nav-btn.locked { opacity: 0.5; cursor: not-allowed; }
+        .quiz-nav-btn.locked { background: #F3F4F6; border-color: #E5E7EB; color: #CBD5E1; opacity: 0.6; }
+        .quiz-nav-btn.locked:hover { transform: none; border-color: #E5E7EB; color: #CBD5E1; }
+
+        .quiz-buttons { display: flex; gap: 12px; margin-top: 15px; }
+
+        .quiz-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .quiz-btn:hover { transform: translateY(-1px); }
+        .quiz-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .quiz-btn-secondary {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s ease;
+            color: var(--primary-dark);
+        }
+
+        .quiz-btn-secondary:hover { background: #E0F2FE; }
+        .quiz-btn-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .score-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .score-card h2 { color: white; margin-bottom: 20px; }
+        .score-display { font-size: 3rem; font-weight: 700; font-family: 'Poppins', sans-serif; }
+        .score-label { opacity: 0.9; margin-top: 10px; }
+        .score-message { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 12px; }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, var(--warning) 0%, #D97706 100%);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.4);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ÚKOL */
+        .task-card {
+            background: linear-gradient(to bottom right, #ffffff, #f0f9ff);
+            border: 2px solid #bae6fd;
+        }
+
+        .task-label {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .task-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            list-style: none;
+            font-size: 0.95rem;
+        }
+
+        .task-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* ROZBALOVACÍ DETAILY (MODAL STYLE) */
+        details {
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 144, 214, 0.15);
+        }
+
+        summary {
+            padding: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: '+'; 
+            font-size: 1.5rem;
+            line-height: 0;
+            font-weight: 400;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after { transform: rotate(45deg); }
+
+        .details-content {
+            padding: 0 18px 20px 18px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #f3f4f6;
+            margin-top: -5px;
+            padding-top: 15px;
+        }
+
+        /* Linky v testovací sekci */
+        .test-link {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .test-link:hover { background: #f1f5f9; }
+        .test-link small { display: block; font-weight: 400; color: #64748b; font-size: 0.8rem; margin-top: 2px;}
+
+        /* NOVÉ STYLY PRO GALERII */
+        .gallery-box {
+            background-color: #fafafa;
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px dashed #ccc;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .img-caption {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* FOOTER */
+        footer { text-align: center; padding-top: 30px; }
+        .footer-logo-box {
+            background: white;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .o2-logo { height: 40px; width: auto; display: block; }
+        .footer-text { font-size: 0.75rem; opacity: 0.6; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast">
+        <span id="toast-message">Vyberte prosím odpověď!</span>
+    </div>
+
+    <header>
+        <span class="location-badge">
+            <a class="station-nav prev" href="zs.html" aria-label="Předchozí stanoviště">‹</a>
+            <a class="station-nav home" href="index.html" aria-label="Domů">🏠</a>
+            <span class="station-label">Stanoviště 3/9 - ZUŠ Velvary</span>
+            <a class="station-nav next" href="zalozna.html" aria-label="Další stanoviště">›</a>
+        </span>
+        <h1>Ateliér budoucnosti:<br>Umění nebo podvod?</h1>
+        <div class="header-subtitle">Deepfaky jsou čím dál věrohodnější. Tady vyhraje logika a ověřování.</div>
+    </header>
+
+    <div class="container">
+
+        <div class="card intro-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            </div>
+            <h2>Kdo drží štětec?</h2>
+            <p>V ZUŠ se učíte malovat rukama, ale počítače dnes umí generovat obrazy, které je někdy těžké rozeznat od fotek nebo od kreseb mistrů. Říkáme tomu <strong>generativní AI</strong>.</p>
+            <p>Některé obrázky jsou krásné, jiné slouží k oklamání. Jedné z nejnebezpečnějších forem se říká <strong>deepfake</strong> - falešné video nebo fotka, kde má někdo cizí obličej, nebo říká věci, které nikdy neřekl.</p>
+            <div class="tip-box">
+                <div class="tip-box-title">Rychlá pomůcka</div>
+                <p>Když video vyvolá silnou emoci (strach, vztek, šok), <strong>zpomal</strong>. To je přesně moment, kdy se nejlíp manipuluje.</p>
+            </div>
+        </div>
+
+        <div class="task-card card">
+            <span class="task-label">ÚKOL PRO RODINU</span>
+            <h2>Detektivové detailů</h2>
+            <p>Dříve měla AI často problém namalovat prsty na ruce. <strong>Dnes už to ale není spolehlivý znak</strong> - modely se rychle zlepšují. Jak tedy poznáte AI podvod?</p>
+            
+            <ul class="task-list">
+                <li><strong>Hledejte nelogičnosti:</strong> Nápisy na tričkách, které nedávají smysl, nebo šperky, které se "vpíjí" do kůže.</li>
+                <li><strong>Pozadí:</strong> Lidé v davu za hlavní postavou mají často deformované tváře nebo chybí kusy budov.</li>
+                <li><strong>Textura:</strong> Pleť je často až podezřele hladká, jako z plastu, bez pórů a vrásek.</li>
+            </ul>
+
+            <p>Vyzkoušejte si to níže v sekci „Výzva: Poznáš fake?“</p>
+        </div>
+
+        <div class="card">
+            <h2>Nejčastější pasti deepfaků</h2>
+            <p>U moderních deepfaků už často nepomůže „kouknu na prsty“. Mnohem spolehlivější je <strong>kontext</strong> a <strong>ověření</strong>.</p>
+            <div class="danger-box">
+                <div class="danger-box-title">Varovné signály</div>
+                <p><strong>Časový tlak</strong> („hned“), <strong>tajnost</strong> („nikomu neříkej“), žádost o <strong>peníze/kódy</strong>, nebo „nové číslo“. To je typický scénář podvodu, i když hlas zní jako někdo blízký.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Ukázka situace</h2>
+            <p>Co je tady nejlepší první krok?</p>
+            <div class="scenario-box">
+                <div class="scenario-title">Telefonát „hlasem“ dítěte</div>
+                <p>„Mami/tati, mám průšvih. Prosím <span class="red">pošli 20 000 Kč</span> hned. A <span class="red">nikomu to neříkej</span>.“ Hlas zní velmi věrohodně.</p>
+                <p style="margin: 10px 0 0; color: #78350F;"><strong>Bezpečný postup:</strong> zavěsit a zavolat zpět na <strong>známé číslo</strong> / ověřit přes další člena rodiny. Nereagovat na tlak.</p>
+            </div>
+        </div>
+
+        <div class="quiz-card card" id="quiz-container">
+            <h2>Kvíz: poznám manipulaci?</h2>
+            <div class="progress-text">Otázka <span id="current-question">1</span> z 9</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+            </div>
+
+            <div id="questions-wrapper">
+                <div class="question-slide" id="q1">
+                    <div class="quiz-question"><span class="quiz-number">1</span><span class="quiz-question-text">Přijde ti naléhavá zpráva „pošli peníze hned“ od někoho blízkého. Co uděláš?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q1" value="a"><span class="quiz-option-marker">A</span><span>Pošlu to hned, ať je klid</span></label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="b"><span class="quiz-option-marker">B</span><span>Ověřím to: zavolám zpět na známé číslo / jiným kanálem</span></label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="c"><span class="quiz-option-marker">C</span><span>Přepošlu to kamarádům</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q1-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q2">
+                    <div class="quiz-question"><span class="quiz-number">2</span><span class="quiz-question-text">Co je deepfake?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q2" value="a"><span class="quiz-option-marker">A</span><span>Uměle vytvořené nebo upravené video/fotka/hlas, které vypadají jako reálné</span></label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="b"><span class="quiz-option-marker">B</span><span>Rozmazané video z nekvalitního telefonu</span></label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="c"><span class="quiz-option-marker">C</span><span>Jen filtr na Instagramu</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q2-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q3">
+                    <div class="quiz-question"><span class="quiz-number">3</span><span class="quiz-question-text">Co bývá nejspolehlivější způsob, jak něco ověřit?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q3" value="a"><span class="quiz-option-marker">A</span><span>Dívat se jen na rty ve videu</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="b"><span class="quiz-option-marker">B</span><span>Věřit tomu, kdo to poslal</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="c"><span class="quiz-option-marker">C</span><span>Ověřit kontext a zdroj: kdo to publikoval, kde se to objevilo, jiné zprávy</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q3-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q4">
+                    <div class="quiz-question"><span class="quiz-number">4</span><span class="quiz-question-text">Video tvrdí šokující věc o škole/městě. Co je nejlepší první krok?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q4" value="a"><span class="quiz-option-marker">A</span><span>Okamžitě to sdílet, ať se to rozšíří</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="b"><span class="quiz-option-marker">B</span><span>Najít původní zdroj a ověřit v dalších důvěryhodných kanálech</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="c"><span class="quiz-option-marker">C</span><span>Napsat „to je pravda“ do komentářů</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q4-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q5">
+                    <div class="quiz-question"><span class="quiz-number">5</span><span class="quiz-question-text">Je „AI detektor“ nebo watermark 100% jistota?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q5" value="a"><span class="quiz-option-marker">A</span><span>Ano, vždy</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="b"><span class="quiz-option-marker">B</span><span>Jen když to píše v popisku</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="c"><span class="quiz-option-marker">C</span><span>Ne. Je to jen vodítko – může se mýlit</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q5-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q6">
+                    <div class="quiz-question"><span class="quiz-number">6</span><span class="quiz-question-text">Jak se doma chránit před klonovaným hlasem?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q6" value="a"><span class="quiz-option-marker">A</span><span>Domluvit si „tajné rodinné heslo“ pro krizové situace</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="b"><span class="quiz-option-marker">B</span><span>Posílat hlasové zprávy veřejně</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="c"><span class="quiz-option-marker">C</span><span>Vždy věřit tomu, co slyším</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q6-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q7">
+                    <div class="quiz-question"><span class="quiz-number">7</span><span class="quiz-question-text">Někdo říká „nikomu to neříkej“. Co to obvykle znamená?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q7" value="a"><span class="quiz-option-marker">A</span><span>Je to vždy pravda</span></label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="b"><span class="quiz-option-marker">B</span><span>Je to varovný signál manipulace a nátlaku</span></label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="c"><span class="quiz-option-marker">C</span><span>Je to běžná bezpečnostní rada</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q7-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q8">
+                    <div class="quiz-question"><span class="quiz-number">8</span><span class="quiz-question-text">Co je bezpečnější s podezřelým videem?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q8" value="a"><span class="quiz-option-marker">A</span><span>Okamžitě ho poslat do třídní skupiny</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="b"><span class="quiz-option-marker">B</span><span>Napsat „nevím, ale asi to je pravda“</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="c"><span class="quiz-option-marker">C</span><span>Nešířit ho, nejdřív ověřit zdroj a případně nahlásit</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q8-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q9">
+                    <div class="quiz-question"><span class="quiz-number">9</span><span class="quiz-question-text">Když si nejsi jistý/á, co je pravda, co je nejlepší pravidlo?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q9" value="a"><span class="quiz-option-marker">A</span><span>Zastavit se a ověřit u zdroje / přímo u dotyčné osoby</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="b"><span class="quiz-option-marker">B</span><span>Věřit tomu, co má nejvíc lajků</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="c"><span class="quiz-option-marker">C</span><span>Řídit se jen pocitem</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q9-feedback"></div>
+                </div>
+            </div>
+
+            <div class="quiz-nav" id="quiz-nav">
+                <button class="quiz-nav-btn active" data-q="1">1</button>
+                <button class="quiz-nav-btn" data-q="2">2</button>
+                <button class="quiz-nav-btn" data-q="3">3</button>
+                <button class="quiz-nav-btn" data-q="4">4</button>
+                <button class="quiz-nav-btn" data-q="5">5</button>
+                <button class="quiz-nav-btn" data-q="6">6</button>
+                <button class="quiz-nav-btn" data-q="7">7</button>
+                <button class="quiz-nav-btn" data-q="8">8</button>
+                <button class="quiz-nav-btn" data-q="9">9</button>
+            </div>
+
+            <div class="quiz-buttons">
+                <button class="quiz-btn" id="submit-btn">Ověřit odpověď</button>
+                <button class="quiz-btn-secondary hidden" id="next-btn">Další otázka →</button>
+            </div>
+        </div>
+
+        <div class="card score-card hidden" id="results">
+            <h2>Vaše výsledky</h2>
+            <div class="score-display" id="score-display">0/9</div>
+            <p class="score-label">správných odpovědí</p>
+            <div class="score-message" id="score-message"></div>
+        </div>
+
+        <details>
+            <summary>Deepfake: hlas a video</summary>
+            <div class="details-content">
+                <p>Pozor! Deepfaky už nejsou jen „vtipná videa celebrit“. Aktuálně patří mezi největší hrozby <strong>hlasové podvody (vishing)</strong>, často s <strong>klonováním hlasu</strong>, a také <strong>live deepfaky</strong>.</p>
+                
+                <div class="gallery-box">
+                    <video src="img/zus-deepfake.mp4" controls playsinline width="100%">
+                        Váš prohlížeč nepodporuje přehrávání videí. 
+                        <a href="img/zus-deepfake.mp4" download>Stáhnout video</a>
+                    </video>
+                    <span class="img-caption">V tomto videu je vidět častá slabina deepfaků: pohyb rtů může být nepřirozený a nemusí odpovídat hlasu. Video vytvořili profesionálové (2023) a je v něm použitý syntetický hlas (zvuk), který vygenerovala AI.</span>
+
+                </div>
+
+                <div class="gallery-box">
+                    <video src="img/zus-deepfake2.mp4" controls playsinline width="100%">
+                        Váš prohlížeč nepodporuje přehrávání videí. 
+                        <a href="img/zus-deepfake2.mp4" download>Stáhnout video</a>
+                    </video>
+                    <span class="img-caption">Toto video je také vytvořené profesionály (2023). Tentokrát se na něm, kromě syntetického hlasu, typické chyby AI téměř neprojevují.</span>
+                </div>
+
+                <p style="margin-top:15px; font-size: 0.85rem;"><em>Aktuální hrozba: Podvodníci mohou vzít několik sekund až desítek sekund hlasu z veřejných videí (např. z Instagramu) a zavolat vám „hlasem“ dítěte, že má průšvih a potřebuje peníze. Telefonát může znít velmi věrohodně.</em></p>
+            </div>
+        </details>
+
+        <details>
+            <summary>Zapojte logiku, ne oči</summary>
+            <div class="details-content">
+                <p><strong>AI se vyvíjí velmi rychle.</strong> To, co dnes vypadá trochu „uměle“, může brzy vypadat k nerozeznání od reality. Spoléhat se jen na oči a uši už nestačí.</p>
+                <p>Musíte zapojit <strong>kritické myšlení a logiku</strong>:</p>
+                <ul style="padding-left: 20px; margin: 10px 0;">
+                    <li><strong>Kontext vítězí:</strong> Pokud vidíte video, kde paní učitelka tančí na stole, zeptejte se: <em>„Je to v její povaze? Dává to smysl?“</em></li>
+                    <li><strong>Emoce jsou zbraň:</strong> Podvodná videa útočí na strach nebo vztek. Pokud ve vás video vyvolá silnou emoci, zastavte se. Pravděpodobně je to manipulace.</li>
+                    <li><strong>Ověřujte jinde:</strong> Nevěřte obsahu, ověřte zdroj. Zavolejte dotyčnému, najděte si oficiální zprávu.</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>Výzva: Poznáš fake?</summary>
+            <div class="details-content">
+                <p>Myslíte si, že vás AI neoblafne? Zkuste si tyto testy (odkazy se otevřou v novém okně):</p>
+                
+                <a href="https://www.whichfaceisreal.com/" target="_blank" rel="noopener noreferrer" class="test-link">
+                    <div>
+                        Which Face is Real?
+                        <small>Klasický test. Jedna fotka je člověk, druhá AI.</small>
+                    </div>
+                </a>
+
+                <a href="https://www.humanornot.so/" target="_blank" rel="noopener noreferrer" class="test-link">
+                    <div>
+                        Human or Not?
+                        <small>Chatovací hra. Mluvíte s člověkem nebo s botem?</small>
+                    </div>
+                </a>
+
+                <a href="https://detectfakes.media.mit.edu/" target="_blank" rel="noopener noreferrer" class="test-link">
+                    <div>
+                        Detect Fakes
+                        <small>Poznáte falešnou fotografii?</small>
+                    </div>
+                </a>
+
+                <a href="https://deepfake-total.com/spot_the_audio_deepfake/?" target="_blank" rel="noopener noreferrer" class="test-link">
+                    <div>
+                        Deepfake Audio
+                        <small>Poznejte, zda je hlas skutečný, nebo zmanipulovaný pomocí AI</small>
+                    </div>
+                </a>
+                <a href="https://deepfake-total.com/spot_the_video_deepfake/" target="_blank" rel="noopener noreferrer" class="test-link">
+                    <div>
+                        Deepfake Video
+                        <small>Poznejte, zda je video skutečné, nebo vytvořené pomocí AI</small>
+                    </div>
+                </a>
+
+                <p style="margin-top:15px; font-size: 0.85rem;">Testy s videem a audiem jsou v angličtině. Zkuste si je ale i tehdy, pokud angličtina není váš nejsilnější jazyk - jde hlavně o hledání detailů a o logiku.</p>
+            </div>
+        </details>
+
+        <footer>
+            <div class="footer-logo-box">
+                <img src="img/o2-logo.png" alt="Podpořeno O2 Chytrá škola" class="o2-logo" onerror="this.insertAdjacentHTML('afterend','<span class=&quot;footer-text&quot;>Podpořeno: O2 Chytrá škola</span>'); this.remove();">
+            </div>
+            <p class="footer-text">Projekt pro bezpečnější internet ve Velvarech.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        let score = 0;
+        let currentQuestion = 1;
+        const totalQuestions = 9;
+        const answeredQuestions = {};
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        const quizData = {
+            q1: { correct: 'b', correctMsg: 'Správně. Ověření mimo původní zprávu, třeba na známé číslo nebo jiným kanálem, je nejbezpečnější.', incorrectMsg: 'Pozor. Při nátlaku vždy ověř: zavolej zpět na známé číslo nebo přes jiný kanál.' },
+            q2: { correct: 'a', correctMsg: 'Správně. Deepfake je uměle vytvořený nebo upravený obraz/hlas/video, které může působit reálně.', incorrectMsg: 'Ne. Deepfake je uměle vytvořený nebo upravený obraz/hlas/video.' },
+            q3: { correct: 'c', correctMsg: 'Správně. Nejvíc vyhrává kontext a ověřování zdroje — „kdo, kde, kdy, proč“.', incorrectMsg: 'Pozor. Detaily ve videu můžou klamat. Nejspolehlivější je ověřit zdroj a kontext.' },
+            q4: { correct: 'b', correctMsg: 'Správně. Nejprve původní zdroj a nezávislé potvrzení, teprve pak reakce.', incorrectMsg: 'Ne. Nejlepší je najít původní zdroj a ověřit to v dalších důvěryhodných kanálech.' },
+            q5: { correct: 'c', correctMsg: 'Správně. Detektory a watermarky jsou jen vodítko — můžou se mýlit nebo chybět.', incorrectMsg: 'Pozor. Není to jistota. Detektory i watermarky jsou jen orientační.' },
+            q6: { correct: 'a', correctMsg: 'Správně. Tajné heslo je rychlý způsob, jak ověřit identitu i při klonovaném hlasu.', incorrectMsg: 'Ne. Nejvíc pomůže domluvit si tajné rodinné heslo pro krizové situace.' },
+            q7: { correct: 'b', correctMsg: 'Správně. Tajnost + nátlak je klasická manipulace. V takové chvíli ověřuj dvojnásob.', incorrectMsg: 'Pozor. „Nikomu neříkej“ je typický varovný signál manipulace a podvodu.' },
+            q8: { correct: 'c', correctMsg: 'Správně. Nešířit, ověřit zdroj a případně nahlásit. Šířením pomáháš manipulaci.', incorrectMsg: 'Ne. Bezpečnější je to nešířit a nejdřív ověřit zdroj, případně nahlásit.' },
+            q9: { correct: 'a', correctMsg: 'Správně. Zastavit se a ověřit u zdroje / u dotyčné osoby je nejlepší brzda proti deepfakům.', incorrectMsg: 'Pozor. Nejlepší pravidlo je zastavit se a ověřit u zdroje nebo přímo u dotyčné osoby.' }
+        };
+
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        submitBtn.addEventListener('click', function () {
+            const questionId = 'q' + currentQuestion;
+            const questionEl = document.getElementById(questionId);
+            const options = questionEl.querySelectorAll('.quiz-option');
+            const feedbackEl = document.getElementById(questionId + '-feedback');
+
+            let selectedValue = null;
+            let selectedOption = null;
+            options.forEach(opt => {
+                const input = opt.querySelector('input');
+                if (input.checked) {
+                    selectedValue = input.value;
+                    selectedOption = opt;
+                }
+            });
+
+            if (!selectedValue) {
+                showToast('Vyberte prosím odpověď!');
+                return;
+            }
+
+            const data = quizData[questionId];
+            const isCorrect = selectedValue === data.correct;
+
+            options.forEach(opt => { opt.style.pointerEvents = 'none'; });
+
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+            } else {
+                selectedOption.classList.add('incorrect');
+                options.forEach(opt => {
+                    const input = opt.querySelector('input');
+                    if (input.value === data.correct) opt.classList.add('correct');
+                });
+            }
+
+            if (isCorrect) {
+                score++;
+                feedbackEl.className = 'quiz-feedback show correct';
+                feedbackEl.innerHTML = data.correctMsg;
+            } else {
+                feedbackEl.className = 'quiz-feedback show incorrect';
+                feedbackEl.innerHTML = data.incorrectMsg;
+            }
+
+            answeredQuestions[questionId] = { answered: true, correct: isCorrect };
+            updateNavButton(currentQuestion, isCorrect);
+            updateLockedButtons();
+
+            submitBtn.classList.add('hidden');
+            nextBtn.textContent = (Object.keys(answeredQuestions).length === totalQuestions)
+                ? 'Zobrazit výsledky'
+                : 'Další otázka →';
+            nextBtn.classList.remove('hidden');
+        });
+
+        nextBtn.addEventListener('click', function () {
+            if (Object.keys(answeredQuestions).length === totalQuestions) {
+                showResults();
+                return;
+            }
+
+            let nextQ = currentQuestion;
+            for (let i = 1; i <= totalQuestions; i++) {
+                nextQ = (currentQuestion % totalQuestions) + 1;
+                currentQuestion = nextQ;
+                if (!answeredQuestions['q' + nextQ]) break;
+            }
+
+            goToQuestion(nextQ);
+        });
+
+        document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const qNum = parseInt(this.dataset.q);
+                if (qNum > Object.keys(answeredQuestions).length + 1) {
+                    showToast('Nejprve odpovězte na aktuální otázku!');
+                    return;
+                }
+                goToQuestion(qNum);
+            });
+        });
+
+        function goToQuestion(qNum) {
+            document.querySelectorAll('.question-slide').forEach(q => q.classList.add('hidden'));
+            document.getElementById('q' + qNum).classList.remove('hidden');
+            currentQuestion = qNum;
+
+            document.querySelectorAll('.quiz-nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]').classList.add('active');
+
+            updateProgress();
+
+            if (answeredQuestions['q' + qNum]) {
+                submitBtn.classList.add('hidden');
+                nextBtn.textContent = (Object.keys(answeredQuestions).length === totalQuestions)
+                    ? 'Zobrazit výsledky'
+                    : 'Další otázka →';
+                nextBtn.classList.remove('hidden');
+            } else {
+                submitBtn.classList.remove('hidden');
+                nextBtn.classList.add('hidden');
+            }
+        }
+
+        function updateNavButton(qNum, isCorrect) {
+            const navBtn = document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]');
+            navBtn.classList.remove('active');
+            navBtn.classList.toggle('answered-correct', isCorrect);
+            navBtn.classList.toggle('answered-wrong', !isCorrect);
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answeredQuestions).length;
+            const progress = (answered / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('current-question').textContent = currentQuestion;
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            const resultsEl = document.getElementById('results');
+            resultsEl.classList.remove('hidden');
+            document.getElementById('score-display').textContent = score + '/' + totalQuestions;
+
+            const percentage = (score / totalQuestions) * 100;
+            let message = '';
+            if (percentage === 100) {
+                message = 'Výborně. Máš reflex ověřovat a nenechat se tlačit emocemi.';
+            } else if (percentage >= 70) {
+                message = 'Skvělý základ. Nezapomeň: nátlak + tajnost + peníze = vždy ověřovat.';
+            } else if (percentage >= 50) {
+                message = 'Dobrá snaha. Pomůže „pauza“, ověření zdroje a domluvené rodinné heslo.';
+            } else {
+                message = 'Doporučení: při silné emoci zpomal a ověř. Deepfake je hlavně hra na nátlak a důvěru.';
+            }
+
+            document.getElementById('score-message').textContent = message;
+            resultsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const questionEl = this.closest('.question-slide');
+                const qId = questionEl.id;
+                if (answeredQuestions[qId]) return;
+
+                const input = this.querySelector('input');
+                questionEl.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                input.checked = true;
+            });
+        });
+
+        function updateLockedButtons() {
+            const answeredCount = Object.keys(answeredQuestions).length;
+            document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+                const qNum = parseInt(btn.dataset.q);
+                if (qNum > answeredCount + 1) btn.classList.add('locked');
+                else btn.classList.remove('locked');
+            });
+        }
+
+        updateLockedButtons();
+    </script>
+
+</body>
+</html>

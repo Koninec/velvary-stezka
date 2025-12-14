@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="ZŠ Velvary - Algoritmy a závislost">
+    <meta property="og:description" content="Proč nám aplikace ukazují právě tohle? Jak fungují doporučovací algoritmy a proč se dá tak těžko přestat scrollovat.">
+
+    <title>ZŠ Velvary - Algoritmy a závislost | Kyber stezka Velvary</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0090D6;
+            --primary-dark: #005BBB;
+            --accent: #00D6D6; 
+            --bg-color: #F2F4F8;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --radius: 24px;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 24px 45px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 91, 187, 0.25);
+            position: relative;
+            z-index: 1;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .station-nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            line-height: 1;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .station-nav:hover { background: rgba(255, 255, 255, 0.28); transform: translateY(-1px); }
+        .station-nav:active { transform: translateY(0); }
+        .station-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        .station-label { display: inline; }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 600px;
+            margin: -35px auto 0;
+            padding: 0 20px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* KARTY */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background-color: #E0F2FE;
+            color: var(--primary-dark);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .card-icon svg { width: 28px; height: 28px; }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        p { margin-bottom: 15px; font-size: 0.95rem; color: var(--text-muted); }
+        
+        strong { color: var(--text-main); font-weight: 600; }
+
+        .header-subtitle {
+            margin-top: 10px;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .intro-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .intro-card .card-icon { background: #E0F2FE; }
+
+        .tip-box {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .tip-box-title {
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 8px;
+        }
+
+        .tip-box p {
+            color: #78350F;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .danger-box {
+            background: linear-gradient(135deg, #FEE2E2, #FECACA);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--error);
+        }
+
+        .danger-box-title {
+            font-weight: 700;
+            color: #991B1B;
+            margin-bottom: 8px;
+        }
+
+        .danger-box p {
+            color: #7F1D1D;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .scenario-box {
+            background: #FEF3C7;
+            border: 2px dashed var(--warning);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        .scenario-box .scenario-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #92400E;
+        }
+
+        .scenario-box .red {
+            color: #DC2626;
+            font-weight: 700;
+        }
+
+        /* QUIZ */
+        .quiz-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .hidden { display: none !important; }
+
+        #questions-wrapper { margin-bottom: 10px; }
+
+        .quiz-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .quiz-question-text { flex: 1; }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .quiz-option:hover { background: #f8fafc; border-color: var(--primary); }
+        .quiz-option.selected { background: #E0F2FE; border-color: var(--primary); }
+        .quiz-option.correct { background: #D1FAE5; border-color: var(--success); }
+        .quiz-option.incorrect { background: #FEE2E2; border-color: var(--error); }
+        .quiz-option input { display: none; }
+
+        .quiz-option-marker {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .quiz-option.selected .quiz-option-marker { background: var(--primary); border-color: var(--primary); color: white; }
+        .quiz-option.correct .quiz-option-marker { background: var(--success); border-color: var(--success); color: white; }
+        .quiz-option.incorrect .quiz-option-marker { background: var(--error); border-color: var(--error); color: white; }
+
+        .quiz-feedback {
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+        .quiz-feedback.incorrect { background: #FEE2E2; color: #7F1D1D; border: 1px solid #FCA5A5; }
+
+        .quiz-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .quiz-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #E5E7EB;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .quiz-nav-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+        .quiz-nav-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+        .quiz-nav-btn.answered-correct { background: var(--success); border-color: var(--success); color: white; }
+        .quiz-nav-btn.answered-wrong { background: var(--error); border-color: var(--error); color: white; }
+
+        .quiz-nav-btn.locked { opacity: 0.5; cursor: not-allowed; }
+        .quiz-nav-btn.locked { background: #F3F4F6; border-color: #E5E7EB; color: #CBD5E1; opacity: 0.6; }
+        .quiz-nav-btn.locked:hover { transform: none; border-color: #E5E7EB; color: #CBD5E1; }
+
+        .quiz-buttons { display: flex; gap: 12px; margin-top: 15px; }
+
+        .quiz-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .quiz-btn:hover { transform: translateY(-1px); }
+        .quiz-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .quiz-btn-secondary {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s ease;
+            color: var(--primary-dark);
+        }
+
+        .quiz-btn-secondary:hover { background: #E0F2FE; }
+        .quiz-btn-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .score-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .score-card h2 { color: white; margin-bottom: 20px; }
+        .score-display { font-size: 3rem; font-weight: 700; font-family: 'Poppins', sans-serif; }
+        .score-label { opacity: 0.9; margin-top: 10px; }
+        .score-message { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 12px; }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, var(--warning) 0%, #D97706 100%);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.4);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ÚKOL */
+        .task-card {
+            background: linear-gradient(to bottom right, #ffffff, #f0f9ff);
+            border: 2px solid #bae6fd;
+        }
+
+        .task-label {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .task-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            list-style: none;
+            font-size: 0.95rem;
+        }
+
+        .task-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* ROZBALOVACÍ DETAILY (MODAL STYLE) */
+        details {
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        details[open] {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 144, 214, 0.15);
+        }
+
+        summary {
+            padding: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: '+'; 
+            font-size: 1.5rem;
+            line-height: 0;
+            font-weight: 400;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after { transform: rotate(45deg); }
+
+        .details-content {
+            padding: 0 18px 20px 18px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #f3f4f6;
+            margin-top: -5px;
+            padding-top: 15px;
+        }
+
+        /* Linky v testovací sekci */
+        .test-link {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .test-link:hover { background: #f1f5f9; }
+        .test-link span { margin-right: 10px; font-size: 1.2rem; }
+        .test-link small { display: block; font-weight: 400; color: #64748b; font-size: 0.8rem; margin-top: 2px;}
+
+        /* NOVÉ STYLY PRO GALERII */
+        .gallery-box {
+            background-color: #fafafa;
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px dashed #ccc;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .img-caption {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        
+
+        /* FOOTER */
+        footer { text-align: center; padding-top: 30px; }
+        .footer-logo-box {
+            background: white;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .o2-logo { height: 40px; width: auto; display: block; }
+        .footer-text { font-size: 0.75rem; opacity: 0.6; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="toast" id="toast">
+        <span id="toast-message">Vyberte prosím odpověď!</span>
+    </div>
+
+    <header>
+        <span class="location-badge">
+            <a class="station-nav prev" href="ms.html" aria-label="Předchozí stanoviště">‹</a>
+            <a class="station-nav home" href="index.html" aria-label="Domů">🏠</a>
+            <span class="station-label">Stanoviště 2/9 - ZŠ Velvary</span>
+            <a class="station-nav next" href="zus.html" aria-label="Další stanoviště">›</a>
+        </span>
+        <h1>Algoritmy a závislost:<br>Kdo řídí tvůj feed?</h1>
+        <div class="header-subtitle">Proč ti aplikace ukazují právě tohle a proč se dá tak těžko přestat scrollovat.</div>
+    </header>
+
+    <div class="container">
+
+        <div class="card intro-card">
+            <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            </div>
+            <h2>Algoritmus není magie</h2>
+            <p><strong>Algoritmus</strong> je „recept“: série kroků, které rozhodují, co se stane dál. Ve škole ho potkáte třeba v matematice, v informatice… a taky v aplikacích, které používáte každý den.</p>
+            <p>Na sociálních sítích a ve videích algoritmus často řeší otázku: <strong>„Co ti ukážu jako další, aby ses díval/a co nejdéle?“</strong> Ne proto, že by tě chtěl naštvat – ale protože aplikace vydělává na vaší pozornosti.</p>
+            <div class="tip-box">
+                <div class="tip-box-title">Rychlá pomůcka</div>
+                <p>Když tě něco vtáhne, zeptej se: <strong>„Proč mi tohle ukazují?“</strong> Co jsem sledoval/a předtím? A <strong>„Je to fakt, nebo jen emoce?“</strong> U bublin vyhrává chladná hlava.</p>
+            </div>
+        </div>
+
+        <div class="task-card card">
+            <span class="task-label">PRAVIDLA PRO VŠECHNY</span>
+            <h2>Algoritmické bubliny: proč je to nebezpečné</h2>
+            <p>Algoritmus ti ukazuje hlavně to, u čeho zůstáváš. Postupně tak může vzniknout <strong>bublina</strong>: svět, kde vidíš pořád podobné názory, podobné emoce a podobné „důkazy“.</p>
+
+            <div class="danger-box">
+                <div class="danger-box-title">Co se v bublině děje</div>
+                <p>Obsah se může <strong>přitvrzovat</strong> - víc šoku, hněvu, strachu - mizí kontext a zdroje. Člověk pak snadno uvěří, že „všichni to vidí stejně“ - a hůř pozná manipulaci, reklamu nebo dezinformaci.</p>
+            </div>
+            
+            <ul class="task-list">
+                <li><strong>Střídej zdroje</strong>: sleduj i jiné pohledy, ne jen jednu stránku a jednoho tvůrce.</li>
+                <li><strong>Kontroluj „Proč to vidím“</strong>: když to platforma nabízí, podívej se, proč ti to doporučuje.</li>
+                <li><strong>Resetuj doporučování</strong>: maž historii sledování/vyhledávání nebo použij anonymní režim, když zkoumáš „divné“ téma.</li>
+            </ul>
+
+            <p>Klíčová věta: <strong>feed není realita</strong>. Je to výběr, který má udržet pozornost - a proto se vyplatí mít nad výběrem aspoň trochu kontrolu.</p>
+        </div>
+
+        <div class="card">
+            <h2>Co tě nejčastěji drží v aplikaci</h2>
+            <p>Největší „lepidlo“ bývá kombinace: <strong>nekonečný feed + doporučování + nepravidelná odměna</strong>. Všechno je navržené tak, aby ses nemusel/a rozhodovat - jen pokračovat.</p>
+            <div class="danger-box">
+                <div class="danger-box-title">Nejčastější pasti</div>
+                <p>„Ještě jedno video“, scroll bez konce, <strong>přitvrzování</strong> obsahu - víc šoku/hněvu/strachu - a pocit, že „to musím vidět“.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Ukázka situace</h2>
+            <p>Poznáš, v čem je problém?</p>
+            <div class="scenario-box">
+                <div class="scenario-title">Jak vzniká bublina</div>
+                <p>Podíváš se na pár videí o jednom tématu. Algoritmus to vezme jako signál a začne ti tlačit <span class="red">hodně podobný obsah</span>. Za chvíli vidíš jen jednu verzi reality - a občas i <span class="red">extrémnější</span> varianty, protože ty drží pozornost.</p>
+                <p style="margin: 10px 0 0; color: #78350F;"><strong>Řešení:</strong> aktivně přepnout směr: vyhledat jiné zdroje, u extrémů odejít hned a ideálně je nedokoukávat, dát „nezajímá“ nebo skrýt podobné, pokud to platforma nabízí, a ověřovat původ a kontext.</p>
+            </div>
+        </div>
+
+        <div class="quiz-card card" id="quiz-container">
+            <h2>Kvíz: mám feed pod kontrolou?</h2>
+            <div class="progress-text">Otázka <span id="current-question">1</span> z 9</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+            </div>
+
+            <div id="questions-wrapper">
+                <div class="question-slide" id="q1">
+                    <div class="quiz-question"><span class="quiz-number">1</span><span class="quiz-question-text">Který signál nejčastěji říká algoritmu, co tě zajímá?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q1" value="a"><span class="quiz-option-marker">A</span><span>Jakou máš značku telefonu</span></label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="b"><span class="quiz-option-marker">B</span><span>Jak dlouho u obsahu zůstaneš</span></label>
+                        <label class="quiz-option"><input type="radio" name="q1" value="c"><span class="quiz-option-marker">C</span><span>Kolik máš kontaktů</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q1-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q2">
+                    <div class="quiz-question"><span class="quiz-number">2</span><span class="quiz-question-text">Co je nejrychlejší krok, když vidíš, že tě doporučování tlačí do jedné bubliny?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q2" value="a"><span class="quiz-option-marker">A</span><span>Vyhledat jiné zdroje a u extrémů hned odejít</span></label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="b"><span class="quiz-option-marker">B</span><span>Olajkovat to, ať je toho víc</span></label>
+                        <label class="quiz-option"><input type="radio" name="q2" value="c"><span class="quiz-option-marker">C</span><span>Sdílet to do skupiny bez ověření</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q2-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q3">
+                    <div class="quiz-question"><span class="quiz-number">3</span><span class="quiz-question-text">Obsah tě rozčílí nebo vystraší. Co je nejlepší reakce?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q3" value="a"><span class="quiz-option-marker">A</span><span>Okamžitě to sdílet dál</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="b"><span class="quiz-option-marker">B</span><span>Zastavit se, dát pauzu a ověřit zdroj / kontext</span></label>
+                        <label class="quiz-option"><input type="radio" name="q3" value="c"><span class="quiz-option-marker">C</span><span>Napsat naštvaný komentář</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q3-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q4">
+                    <div class="quiz-question"><span class="quiz-number">4</span><span class="quiz-question-text">Proč je nekonečný feed problém pro pozornost?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q4" value="a"><span class="quiz-option-marker">A</span><span>Protože je moc barevný</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="b"><span class="quiz-option-marker">B</span><span>Protože zvyšuje kvalitu videí</span></label>
+                        <label class="quiz-option"><input type="radio" name="q4" value="c"><span class="quiz-option-marker">C</span><span>Protože nemá přirozený „konec kapitoly“</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q4-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q5">
+                    <div class="quiz-question"><span class="quiz-number">5</span><span class="quiz-question-text">Co nejvíc pomáhá „prorazit“ bublinu?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q5" value="a"><span class="quiz-option-marker">A</span><span>Střídat zdroje a cíleně hledat i jiný pohled</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="b"><span class="quiz-option-marker">B</span><span>Nechat doporučování běžet, ono se to zlepší samo</span></label>
+                        <label class="quiz-option"><input type="radio" name="q5" value="c"><span class="quiz-option-marker">C</span><span>Klikat na nejvýraznější titulky a sdílet je dál</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q5-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q6">
+                    <div class="quiz-question"><span class="quiz-number">6</span><span class="quiz-question-text">Chceš změnit doporučování. Co obvykle funguje?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q6" value="a"><span class="quiz-option-marker">A</span><span>Nechat to být, algoritmus se změní sám</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="b"><span class="quiz-option-marker">B</span><span>Aktivně vyhledat nové téma a omezit sledování starého</span></label>
+                        <label class="quiz-option"><input type="radio" name="q6" value="c"><span class="quiz-option-marker">C</span><span>Nakoupit nový telefon</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q6-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q7">
+                    <div class="quiz-question"><span class="quiz-number">7</span><span class="quiz-question-text">Kdy je dobrý čas dát si pauzu od scrollu?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q7" value="a"><span class="quiz-option-marker">A</span><span>Když máš nejlepší náladu</span></label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="b"><span class="quiz-option-marker">B</span><span>Když už máš nabitou baterku</span></label>
+                        <label class="quiz-option"><input type="radio" name="q7" value="c"><span class="quiz-option-marker">C</span><span>Když se cítíš hůř a čas ti „mizí“</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q7-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q8">
+                    <div class="quiz-question"><span class="quiz-number">8</span><span class="quiz-question-text">Co znamená „bublina“ na sociálních sítích?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q8" value="a"><span class="quiz-option-marker">A</span><span>Že videa mají bubliny ve zvuku</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="b"><span class="quiz-option-marker">B</span><span>Že často vidíš hlavně podobné názory/obsah a méně různorodosti</span></label>
+                        <label class="quiz-option"><input type="radio" name="q8" value="c"><span class="quiz-option-marker">C</span><span>Že internet nefunguje</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q8-feedback"></div>
+                </div>
+
+                <div class="question-slide hidden" id="q9">
+                    <div class="quiz-question"><span class="quiz-number">9</span><span class="quiz-question-text">Jaký cíl má většina sociálních aplikací?</span></div>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="q9" value="a"><span class="quiz-option-marker">A</span><span>Udržet tě co nejdéle, protože pozornost jsou peníze</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="b"><span class="quiz-option-marker">B</span><span>Naučit tě matematiku</span></label>
+                        <label class="quiz-option"><input type="radio" name="q9" value="c"><span class="quiz-option-marker">C</span><span>Zrychlit ti wi‑fi</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q9-feedback"></div>
+                </div>
+            </div>
+
+            <div class="quiz-nav" id="quiz-nav">
+                <button class="quiz-nav-btn active" data-q="1">1</button>
+                <button class="quiz-nav-btn" data-q="2">2</button>
+                <button class="quiz-nav-btn" data-q="3">3</button>
+                <button class="quiz-nav-btn" data-q="4">4</button>
+                <button class="quiz-nav-btn" data-q="5">5</button>
+                <button class="quiz-nav-btn" data-q="6">6</button>
+                <button class="quiz-nav-btn" data-q="7">7</button>
+                <button class="quiz-nav-btn" data-q="8">8</button>
+                <button class="quiz-nav-btn" data-q="9">9</button>
+            </div>
+
+            <div class="quiz-buttons">
+                <button class="quiz-btn" id="submit-btn">Ověřit odpověď</button>
+                <button class="quiz-btn-secondary hidden" id="next-btn">Další otázka →</button>
+            </div>
+        </div>
+
+        <div class="card score-card hidden" id="results">
+            <h2>Vaše výsledky</h2>
+            <div class="score-display" id="score-display">0/9</div>
+            <p class="score-label">správných odpovědí</p>
+            <div class="score-message" id="score-message"></div>
+        </div>
+
+        <details>
+            <summary>Jak doporučovací algoritmus „učí“ tvůj feed</summary>
+            <div class="details-content">
+                <p>Algoritmus většinou nezná tvé jméno ani tvoje známky. Pozoruje ale <strong>signály</strong>:</p>
+                <ul style="padding-left: 20px; margin: 10px 0;">
+                    <li><strong>Čas</strong>: u čeho se zastavíš a jak dlouho?</li>
+                    <li><strong>Akce</strong>: co lajkuješ, sdílíš, ukládáš, komentuješ?</li>
+                    <li><strong>Dokoukání</strong>: dokoukáš video do konce, nebo odejdeš?</li>
+                    <li><strong>Opakování</strong>: vracíš se k tématu - sport, hry, drama, „pranky“?</li>
+                </ul>
+                <p>Pak zkusí nabídnout „podobné“ věci. Když zafungují, bude jich víc. Tomu se dá říct: <strong>feed se přizpůsobuje tobě</strong>… ale zároveň tě <strong>tvaruje</strong> tím, co ti pořád dokola servíruje.</p>
+                
+                <div class="gallery-box">
+                    <p style="margin: 0;"><strong>Mini-výzva:</strong> Zkuste 5 minut vyhledávat a sledovat jen jedno nové, „zdravé“ téma - třeba recepty, triky do školy, sportovní trénink. Co se začne objevovat víc za dalších 1–2 dny?</p>
+                </div>
+
+                <p style="margin-top:15px; font-size: 0.85rem;"><em>Tip: Když algoritmus nechcete „krmit“, pomáhá promazat historii sledování / vyhledávání nebo používat režim bez historie.</em></p>
+            </div>
+        </details>
+
+        <details>
+            <summary>Proč se tak těžko přestává: „odměny“ a návyk</summary>
+            <div class="details-content">
+                <p>Některé aplikace jsou navržené tak, aby tě udržely co nejdéle. Často používají trik z her a automatů: <strong>nepravidelnou odměnu</strong>.</p>
+                <p>Někdy se v feedu nic neděje… a pak najednou přijde super video, nový komentář, zpráva nebo „výhra“. Mozek si to zapamatuje a chce to znovu. Proto vzniká pocit: <strong>„Ještě jedno…“</strong></p>
+                <ul style="padding-left: 20px; margin: 10px 0;">
+                    <li><strong>Nekonečný feed</strong>: nikdy není „konec kapitoly“.</li>
+                    <li><strong>Doporučování</strong>: „další“ obsah je vždy po ruce a láká tě pokračovat.</li>
+                    <li><strong>Emoce</strong>: šok/hněv/strach se šíří rychleji než klidné vysvětlení.</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>Tři otázky, které tě chrání</summary>
+            <div class="details-content">
+                <p>Když tě něco vtáhne a zjistíš, že scrolluješ „na autopilota“, zkus si v hlavě rychle odpovědět:</p>
+                <ul style="padding-left: 20px; margin: 10px 0;">
+                    <li><strong>Proč mi tohle ukazují?</strong></li>
+                    <li><strong>Kdo z toho má užitek?</strong></li>
+                    <li><strong>Jak se budu cítit za 10 minut?</strong></li>
+                </ul>
+
+                <div class="gallery-box">
+                    <p style="margin: 0;"><strong>Prakticky:</strong> když chceš „rozbít“ bublinu, udělej 2–3 kliky navíc - najdi původní zdroj, otevři jiné médium a přečti si i opačný pohled. Doporučování se učí z toho, co sleduješ.</p>
+                </div>
+
+                <p style="margin-top:15px; font-size: 0.85rem;">Algoritmus je nástroj - ne šéf. Čím víc ověřuješ a střídáš zdroje, tím hůř se ti prodává manipulace.</p>
+            </div>
+        </details>
+
+        <footer>
+            <div class="footer-logo-box">
+                <img src="img/o2-logo.png" alt="Podpořeno O2 Chytrá škola" class="o2-logo" onerror="this.insertAdjacentHTML('afterend','<span class=&quot;footer-text&quot;>Podpořeno: O2 Chytrá škola</span>'); this.remove();">
+            </div>
+            <p class="footer-text">Projekt pro bezpečnější internet ve Velvarech.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        let score = 0;
+        let currentQuestion = 1;
+        const totalQuestions = 9;
+        const answeredQuestions = {};
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        const quizData = {
+            q1: { correct: 'b', correctMsg: 'Správně. Čas sledování je často nejsilnější signál: u čeho se zastavíš a jak dlouho.', incorrectMsg: 'Pozor. Nejčastější signál je čas sledování - u čeho se zastavíš a jak dlouho.' },
+            q2: { correct: 'a', correctMsg: 'Správně. Když změníš signály, změníš i doporučování.', incorrectMsg: 'Pozor. Pomáhá u extrémů odejít hned a cíleně hledat různé zdroje.' },
+            q3: { correct: 'b', correctMsg: 'Správně. Silná emoce je brzda: pauza + ověření zdroje je bezpečnější než reakce v afektu.', incorrectMsg: 'Pozor. Když to vyvolá emoci, zastav se a ověř zdroj. Sdílení/komentování v afektu je přesně to, co algoritmus posiluje.' },
+            q4: { correct: 'c', correctMsg: 'Správně. Když není konec, hůř se přestává - mozek nedostane „hotovo“.', incorrectMsg: 'Ne. Problém je, že nemá přirozený konec. Proto je těžší odejít.' },
+            q5: { correct: 'a', correctMsg: 'Správně. Bublinu proráží pestrost: různé zdroje a aktivní vyhledávání.', incorrectMsg: 'Pozor. Nejvíc pomáhá střídat zdroje a hledat i jiný pohled - ne jen doporučené.' },
+            q6: { correct: 'b', correctMsg: 'Správně. Feed se učí z toho, co sleduješ. Změna chování a někdy i smazání historie feed postupně přenastaví.', incorrectMsg: 'Ne. Funguje aktivně vyhledat nový směr a omezit starý. Nový telefon není řešení.' },
+            q7: { correct: 'c', correctMsg: 'Správně. Když se cítíš hůř a čas mizí, je to signál na pauzu.', incorrectMsg: 'Ne. Nejlepší signál je: cítíš se hůř a čas mizí - dej si pauzu.' },
+            q8: { correct: 'b', correctMsg: 'Správně. Bublina je, když vidíš pořád podobný obsah/názory a méně různorodosti.', incorrectMsg: 'Pozor. Bublina znamená, že algoritmus často posiluje podobný obsah a názory.' },
+            q9: { correct: 'a', correctMsg: 'Správně. Pozornost je byznys - cílem bývá udržet tě co nejdéle.', incorrectMsg: 'Ne. Nejčastější cíl je udržet tě co nejdéle, protože pozornost se monetizuje.' }
+        };
+
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        submitBtn.addEventListener('click', function () {
+            const questionId = 'q' + currentQuestion;
+            const questionEl = document.getElementById(questionId);
+            const options = questionEl.querySelectorAll('.quiz-option');
+            const feedbackEl = document.getElementById(questionId + '-feedback');
+
+            let selectedValue = null;
+            let selectedOption = null;
+            options.forEach(opt => {
+                const input = opt.querySelector('input');
+                if (input.checked) {
+                    selectedValue = input.value;
+                    selectedOption = opt;
+                }
+            });
+
+            if (!selectedValue) {
+                showToast('Vyberte prosím odpověď!');
+                return;
+            }
+
+            const data = quizData[questionId];
+            const isCorrect = selectedValue === data.correct;
+
+            options.forEach(opt => { opt.style.pointerEvents = 'none'; });
+
+            if (isCorrect) {
+                selectedOption.classList.add('correct');
+            } else {
+                selectedOption.classList.add('incorrect');
+                options.forEach(opt => {
+                    const input = opt.querySelector('input');
+                    if (input.value === data.correct) opt.classList.add('correct');
+                });
+            }
+
+            if (isCorrect) {
+                score++;
+                feedbackEl.className = 'quiz-feedback show correct';
+                feedbackEl.innerHTML = data.correctMsg;
+            } else {
+                feedbackEl.className = 'quiz-feedback show incorrect';
+                feedbackEl.innerHTML = data.incorrectMsg;
+            }
+
+            answeredQuestions[questionId] = { answered: true, correct: isCorrect };
+            updateNavButton(currentQuestion, isCorrect);
+            updateLockedButtons();
+
+            submitBtn.classList.add('hidden');
+            nextBtn.textContent = (Object.keys(answeredQuestions).length === totalQuestions)
+                ? 'Zobrazit výsledky'
+                : 'Další otázka →';
+            nextBtn.classList.remove('hidden');
+        });
+
+        nextBtn.addEventListener('click', function () {
+            if (Object.keys(answeredQuestions).length === totalQuestions) {
+                showResults();
+                return;
+            }
+
+            let nextQ = currentQuestion;
+            for (let i = 1; i <= totalQuestions; i++) {
+                nextQ = (currentQuestion % totalQuestions) + 1;
+                currentQuestion = nextQ;
+                if (!answeredQuestions['q' + nextQ]) break;
+            }
+
+            goToQuestion(nextQ);
+        });
+
+        document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const qNum = parseInt(this.dataset.q);
+                if (qNum > Object.keys(answeredQuestions).length + 1) {
+                    showToast('Nejprve odpovězte na aktuální otázku!');
+                    return;
+                }
+                goToQuestion(qNum);
+            });
+        });
+
+        function goToQuestion(qNum) {
+            document.querySelectorAll('.question-slide').forEach(q => q.classList.add('hidden'));
+            document.getElementById('q' + qNum).classList.remove('hidden');
+            currentQuestion = qNum;
+
+            document.querySelectorAll('.quiz-nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]').classList.add('active');
+
+            updateProgress();
+
+            if (answeredQuestions['q' + qNum]) {
+                submitBtn.classList.add('hidden');
+                nextBtn.textContent = (Object.keys(answeredQuestions).length === totalQuestions)
+                    ? 'Zobrazit výsledky'
+                    : 'Další otázka →';
+                nextBtn.classList.remove('hidden');
+            } else {
+                submitBtn.classList.remove('hidden');
+                nextBtn.classList.add('hidden');
+            }
+        }
+
+        function updateNavButton(qNum, isCorrect) {
+            const navBtn = document.querySelector('.quiz-nav-btn[data-q="' + qNum + '"]');
+            navBtn.classList.remove('active');
+            navBtn.classList.toggle('answered-correct', isCorrect);
+            navBtn.classList.toggle('answered-wrong', !isCorrect);
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answeredQuestions).length;
+            const progress = (answered / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('current-question').textContent = currentQuestion;
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            const resultsEl = document.getElementById('results');
+            resultsEl.classList.remove('hidden');
+            document.getElementById('score-display').textContent = score + '/' + totalQuestions;
+
+            const percentage = (score / totalQuestions) * 100;
+            let message = '';
+            if (percentage === 100) {
+                message = 'Výborně. Máš kontrolu - algoritmus je nástroj, ne šéf.';
+            } else if (percentage >= 70) {
+                message = 'Skvělý základ. Ještě víc ti pomůže hlídat bubliny: střídat zdroje a ověřovat kontext.';
+            } else if (percentage >= 50) {
+                message = 'Dobrá snaha. Pomůže vědomě „krmit“ feed pestřejším obsahem a nevěřit emocím bez ověření.';
+            } else {
+                message = 'Doporučení: začni jedním pravidlem - když tě něco naštve/vystraší, nejdřív ověř zdroj a hledej i jiný pohled.';
+            }
+
+            document.getElementById('score-message').textContent = message;
+            resultsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const questionEl = this.closest('.question-slide');
+                const qId = questionEl.id;
+                if (answeredQuestions[qId]) return;
+
+                const input = this.querySelector('input');
+                questionEl.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                input.checked = true;
+            });
+        });
+
+        function updateLockedButtons() {
+            const answeredCount = Object.keys(answeredQuestions).length;
+            document.querySelectorAll('.quiz-nav-btn').forEach(btn => {
+                const qNum = parseInt(btn.dataset.q);
+                if (qNum > answeredCount + 1) btn.classList.add('locked');
+                else btn.classList.remove('locked');
+            });
+        }
+
+        updateLockedButtons();
+    </script>
+
+</body>
+</html>
